@@ -1,0 +1,15 @@
+{
+  "description": "Remotion starter for generating project promotional videos from the current agent context, storyboard, product demos, and AI-generated creative assets.",
+  "required_fields": ["promo_storyboard.md"],
+  "required_files": [
+    "README.md",
+    "src/Root.tsx",
+    "src/PromoVideo.tsx",
+    "src/timeline.ts",
+    "src/index.ts"
+  ],
+  "lang": "typescript",
+  "framework": "remotion",
+  "name": "remotion-promo",
+  "scene": "Promo Video Template"
+}

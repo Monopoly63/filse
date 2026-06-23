@@ -1,0 +1,196 @@
+LANGUAGE: English
+
+SCENE 1 — THE PROBLEM
+
+Text:
+
+"In a world overflowing with files..."
+"Knowledge becomes scattered."
+
+Voiceover:
+
+"Accessing study materials, resources, and important files has become more complicated than ever."
+
+---
+
+SCENE 2 — THE REVELATION
+
+Text:
+
+"Shairley"
+
+"Where Excellence Meets Learning"
+
+Voiceover:
+
+"Introducing Shairley."
+
+---
+
+SCENE 3 — PLATFORM EXPERIENCE
+
+Voiceover:
+
+"A unified workspace designed for learning, collaboration, and organization."
+
+Text:
+
+Workspaces
+
+Resources
+
+Study Chat
+
+Flashcards
+
+Quizzes
+
+Certificates
+
+Progress Tracking
+
+---
+
+SCENE 4 — ORGANIZED WORKSPACES
+
+Voiceover:
+
+"Create a dedicated workspace for every course, project, or team."
+
+Text:
+
+Organized Workspaces
+
+Smart Structure
+
+Instant Access
+
+---
+
+SCENE 5 — FILE SHARING
+
+Voiceover:
+
+"Share files instantly through secure and accessible links."
+
+Text:
+
+Secure Sharing
+
+Instant Links
+
+Access Anywhere
+
+---
+
+SCENE 6 — STUDY CHAT
+
+Voiceover:
+
+"Collaborate, ask questions, and learn together in real time."
+
+Text:
+
+Real-Time Discussion
+
+Team Collaboration
+
+Study Together
+
+---
+
+SCENE 7 — LEARNING TOOLS
+
+Voiceover:
+
+"Strengthen your understanding with flashcards, quizzes, and achievement tracking."
+
+Text:
+
+Flashcards
+
+Interactive Quizzes
+
+Progress Tracking
+
+Certificates
+
+---
+
+SCENE 8 — ADVANCED PROGRAMMING SHOWCASE
+
+Voiceover:
+
+"The first integrated workspace for Advanced Programming is now live."
+
+Text:
+
+Advanced Programming
+
+Lectures
+
+Assignments
+
+Projects
+
+Study Chat
+
+---
+
+SCENE 9 — SCALE
+
+Voiceover:
+
+"For students. For teams. For educators. For every knowledge-driven community."
+
+Text:
+
+Built For Learning
+
+Built For Collaboration
+
+Built For Growth
+
+---
+
+SCENE 10 — FOUNDERS
+
+Text:
+
+Built By
+
+Mousa Al-Awad
+
+Lead Developer & Co-Founder
+
+Abdulmoin Hablas
+
+CTO & Co-Founder
+
+---
+
+SCENE 11 — FINAL CLIMAX
+
+Text:
+
+"Everything You Need. One Workspace."
+
+"Files. Discussions. Quizzes. Certificates."
+
+"All In One Place."
+
+---
+
+FINAL FRAME
+
+Shairley
+
+Where Excellence Meets Learning
+
+Organize.
+Collaborate.
+Achieve.
+
+Start Today
+
+shairley.vercel.app

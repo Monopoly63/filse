@@ -1,0 +1,50 @@
+{
+  "name": "mgx-remotion-promo",
+  "version": "1.0.0",
+  "description": "Remotion starter for project promotional videos",
+  "repository": {},
+  "license": "UNLICENSED",
+  "private": true,
+  "packageManager": "pnpm@10.10.0",
+  "dependencies": {
+    "@remotion/cli": "4.0.453",
+    "@remotion/tailwind-v4": "4.0.453",
+    "@remotion/zod-types": "4.0.453",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "remotion": "4.0.453",
+    "tailwindcss": "^4.1.10",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.453",
+    "@types/react": "19.0.0",
+    "@types/web": "0.0.166",
+    "eslint": "9.19.0",
+    "prettier": "3.3.3",
+    "typescript": "5.5.4"
+  },
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "bundle": "remotion bundle src/index.ts --out-dir ./dist",
+    "build": "pnpm run render:landscape",
+    "verify:versions": "remotion versions",
+    "verify:compositions": "remotion compositions src/index.ts",
+    "prewarm:browser": "remotion browser ensure",
+    "still:landscape": "remotion still src/index.ts PromoLandscape out/promo-landscape-still.png --frame=30 --scale=0.25",
+    "still:portrait": "remotion still src/index.ts PromoPortrait out/promo-portrait-still.png --frame=30 --scale=0.25",
+    "still:square": "remotion still src/index.ts PromoSquare out/promo-square-still.png --frame=30 --scale=0.25",
+    "render": "pnpm run render:landscape",
+    "render:smoke": "remotion render src/index.ts PromoLandscape out/promo-landscape-smoke.mp4 --concurrency=1 --frames=0-5 --timeout=90000",
+    "render:smoke-portrait": "remotion render src/index.ts PromoPortrait out/promo-portrait-smoke.mp4 --concurrency=1 --frames=0-5 --timeout=90000",
+    "render:smoke-square": "remotion render src/index.ts PromoSquare out/promo-square-smoke.mp4 --concurrency=1 --frames=0-5 --timeout=90000",
+    "render:landscape": "remotion render src/index.ts PromoLandscape out/promo-landscape.mp4 --timeout=120000",
+    "render:portrait": "remotion render src/index.ts PromoPortrait out/promo-portrait.mp4 --timeout=120000",
+    "render:square": "remotion render src/index.ts PromoSquare out/promo-square.mp4 --timeout=120000",
+    "upgrade": "remotion upgrade",
+    "lint": "eslint src && tsc"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
+}

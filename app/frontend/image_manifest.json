@@ -1,0 +1,37 @@
+{
+  "status": "success",
+  "results": [
+    {
+      "status": "success",
+      "filename": "scattered-files-dark-void.jpg",
+      "url": "https://mgx-backend-cdn.metadl.com/generate/images/1365907/2026-06-23/rd4gjrqcaifa/scattered-files-dark-void.png",
+      "path": "https://mgx-backend-cdn.metadl.com/generate/images/1365907/2026-06-23/rd4gjrqcaifa/scattered-files-dark-void.png",
+      "absolute_path": "https://mgx-backend-cdn.metadl.com/generate/images/1365907/2026-06-23/rd4gjrqcaifa/scattered-files-dark-void.png"
+    },
+    {
+      "status": "success",
+      "filename": "abstract-blue-glow-particles.jpg",
+      "url": "https://mgx-backend-cdn.metadl.com/generate/images/1365907/2026-06-23/rd4gj6icaieq/abstract-blue-glow-particles.png",
+      "path": "https://mgx-backend-cdn.metadl.com/generate/images/1365907/2026-06-23/rd4gj6icaieq/abstract-blue-glow-particles.png",
+      "absolute_path": "https://mgx-backend-cdn.metadl.com/generate/images/1365907/2026-06-23/rd4gj6icaieq/abstract-blue-glow-particles.png"
+    },
+    {
+      "status": "success",
+      "filename": "dark-workspace-atmosphere.jpg",
+      "url": "https://mgx-backend-cdn.metadl.com/generate/images/1365907/2026-06-23/rd4gklacaiha/dark-workspace-atmosphere.png",
+      "path": "https://mgx-backend-cdn.metadl.com/generate/images/1365907/2026-06-23/rd4gklacaiha/dark-workspace-atmosphere.png",
+      "absolute_path": "https://mgx-backend-cdn.metadl.com/generate/images/1365907/2026-06-23/rd4gklacaiha/dark-workspace-atmosphere.png"
+    },
+    {
+      "status": "success",
+      "filename": "educational-tools-dark.jpg",
+      "url": "https://mgx-backend-cdn.metadl.com/generate/images/1365907/2026-06-23/rd4gkyacaiga/educational-tools-dark.png",
+      "path": "https://mgx-backend-cdn.metadl.com/generate/images/1365907/2026-06-23/rd4gkyacaiga/educational-tools-dark.png",
+      "absolute_path": "https://mgx-backend-cdn.metadl.com/generate/images/1365907/2026-06-23/rd4gkyacaiga/educational-tools-dark.png"
+    }
+  ],
+  "success_count": 4,
+  "failed_count": 0,
+  "running_count": 0,
+  "message": "Generated 4/4 images total"
+}

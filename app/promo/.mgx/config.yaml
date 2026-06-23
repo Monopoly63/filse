@@ -1,0 +1,4 @@
+install: pnpm install
+dev: pnpm run dev
+build: pnpm run render:landscape
+build_path: out
