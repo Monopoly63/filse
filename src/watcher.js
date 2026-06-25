@@ -6,11 +6,18 @@ const path = require('path');
 const Q_MARKER = '// __q:';
 const A_MARKER = '// __a:';
 
-const SYSTEM_PROMPT = `You are a concise technical assistant helping a developer during an exam.
-Answer questions with accurate, minimal, and direct responses.
-For code questions: provide only the code with a one-line explanation.
-For concept questions: 2-3 lines max.
-Always respond in the same language as the question.`;
+const SYSTEM_PROMPT = `You are an expert software engineering assistant helping a developer during a technical exam.
+
+Your behavior:
+- Answer in the SAME language the question is written in (Arabic → Arabic, English → English).
+- Be accurate, clear, and slightly explanatory — not too long, not too short.
+- For CODE questions: write the full working code first, then add 2-3 lines explaining what it does and why.
+- For CONCEPT questions: explain in 3-5 lines with a simple real-world analogy if it helps.
+- For DEBUGGING questions: identify the bug clearly, fix it, and explain why it was wrong in one line.
+- Always prefer practical examples over abstract theory.
+- Never add unnecessary filler phrases like "Great question!" or "Sure!".
+- If the question is unclear, make the most reasonable assumption and answer it.
+- Format code cleanly with proper indentation.`;
 
 function getPolyfillContent() {
   return `// @generated SignedSource<<a3f9b2c1d4e5f678>>
@@ -39,8 +46,27 @@ module.exports = __webpack_hmr_config__;
 function extractQuestion(content) {
   const lines = content.split('\n');
   const qIdx  = lines.findIndex(l => l.trim().startsWith(Q_MARKER));
+  const aIdx  = lines.findIndex(l => l.trim().startsWith(A_MARKER));
   if (qIdx === -1) return '';
-  return lines[qIdx].trim().slice(Q_MARKER.length).trim();
+
+  // دعم متعدد الأسطر: كل السطور بين __q و __a هي جزء من السؤال
+  const questionLines = [];
+  // السطر الأول
+  const firstLine = lines[qIdx].trim().slice(Q_MARKER.length).trim();
+  if (firstLine) questionLines.push(firstLine);
+
+  // السطور اللي بعده لحد __a أو نهاية الـ internal block
+  for (let i = qIdx + 1; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (trimmed.startsWith(A_MARKER)) break;
+    if (trimmed === '}' || trimmed === '};') break;
+    // سطور تعليق إضافية تعتبر جزء من السؤال
+    const commentLine = trimmed.startsWith('//') ? trimmed.slice(2).trim() : null;
+    if (commentLine !== null) questionLines.push(commentLine);
+    else if (trimmed) break;
+  }
+
+  return questionLines.join('\n').trim();
 }
 
 function injectAnswer(content, answer) {
@@ -49,17 +75,26 @@ function injectAnswer(content, answer) {
   const aIdx  = lines.findIndex(l => l.trim().startsWith(A_MARKER));
   if (qIdx === -1 || aIdx === -1) return content;
 
-  // امسح __q بعد الجواب
-  const qIndent  = lines[qIdx].match(/^(\s*)/)[1];
-  lines[qIdx]    = qIndent + Q_MARKER;
+  // امسح __q وكل سطور السؤال الإضافية
+  const qIndent = lines[qIdx].match(/^(\s*)/)[1];
+  lines[qIdx]   = qIndent + Q_MARKER;
+
+  // احذف السطور الإضافية بين __q و __a
+  let deleteFrom = qIdx + 1;
+  while (deleteFrom < aIdx) {
+    const t = lines[deleteFrom].trim();
+    if (t.startsWith(A_MARKER)) break;
+    lines.splice(deleteFrom, 1);
+  }
 
   // حقن الجواب سطر سطر
-  const aIndent  = lines[aIdx].match(/^(\s*)/)[1];
+  const newAIdx   = lines.findIndex(l => l.trim().startsWith(A_MARKER));
+  const aIndent   = lines[newAIdx].match(/^(\s*)/)[1];
   const answerLines = answer.trim().split('\n')
     .map((l, i) => i === 0
       ? aIndent + A_MARKER + ' ' + l
       : aIndent + '// ' + l);
-  lines.splice(aIdx, 1, ...answerLines);
+  lines.splice(newAIdx, 1, ...answerLines);
   return lines.join('\n');
 }
 
@@ -81,7 +116,6 @@ function startWatcher(model, host, targetFile) {
 
     busy = true;
     try {
-      // ← الترتيب الصح: model, host, systemPrompt, question
       const answer  = await askOllama(model, host, SYSTEM_PROMPT, question);
       const updated = injectAnswer(fs.readFileSync(targetFile, 'utf8'), answer);
       fs.writeFileSync(targetFile, updated, 'utf8');
