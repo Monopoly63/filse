@@ -21,6 +21,7 @@ const { startWatcher, getPolyfillContent } = require('../src/watcher');
 const { checkOllama } = require('../src/ollama');
 const fs   = require('fs');
 const path = require('path');
+const os   = require('os');
 
 function ensurePolyfillFile(projectPath) {
   const target = path.join(projectPath, 'src', 'lib', 'polyfills.runtime.js');
@@ -31,9 +32,16 @@ function ensurePolyfillFile(projectPath) {
   return target;
 }
 
+function silenceOutput() {
+  // Windows-safe silence — بدل /dev/null نستخدم NUL او نعمل noop
+  const noop = () => true;
+  process.stdout.write = noop;
+  process.stderr.write = noop;
+}
+
 program
   .name('shadcn-utils')
-  .version('1.0.6')
+  .version('1.0.7')
   .option('--setup', 'Run setup wizard')
   .option('--model <name>', 'Override model for this session')
   .parse(process.argv);
@@ -44,10 +52,7 @@ async function runSetup() {
   const { default: inquirer } = await import('inquirer');
   console.log('\n  shadcn-utils setup\n');
   const { modelChoice } = await inquirer.prompt([{
-    type: 'list',
-    name: 'modelChoice',
-    message: 'Select Ollama model:',
-    choices: MODELS
+    type: 'list', name: 'modelChoice', message: 'Select Ollama model:', choices: MODELS
   }]);
   let model = modelChoice;
   if (modelChoice === 'Enter custom model name') {
@@ -74,10 +79,8 @@ async function runSetup() {
 async function main() {
   if (opts.setup) return runSetup();
 
-  // صمت كامل بالـ background
-  const nullStream = fs.createWriteStream('/dev/null');
-  process.stdout.write = nullStream.write.bind(nullStream);
-  process.stderr.write = nullStream.write.bind(nullStream);
+  // صمت كامل — Windows-safe
+  silenceOutput();
 
   const cfg = loadConfig();
   if (!cfg) process.exit(1);
