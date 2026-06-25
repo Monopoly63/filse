@@ -1,6 +1,6 @@
 {
   "name": "shadcn-utils",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "React utility toolkit for modern development workflows",
   "main": "src/index.js",
   "bin": {
