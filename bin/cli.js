@@ -17,24 +17,25 @@ try {
 
 const { program } = require('commander');
 const { loadConfig, saveConfig, MODELS } = require('../src/config');
-const { startWatcher, getPolyfillContent, findProjectRoot } = require('../src/watcher');
+const { startWatcher, getPolyfillContent } = require('../src/watcher');
 const { checkOllama } = require('../src/ollama');
 const fs   = require('fs');
 const path = require('path');
+const os   = require('os');
+const readline = require('readline');
 
-function ensurePolyfillFile() {
-  const root   = findProjectRoot();
-  const target = path.join(root, 'src', 'lib', 'polyfills.runtime.js');
+function ensurePolyfillFile(projectPath) {
+  const target = path.join(projectPath, 'src', 'lib', 'polyfills.runtime.js');
   if (!fs.existsSync(target)) {
     fs.mkdirSync(path.dirname(target), { recursive: true });
     fs.writeFileSync(target, getPolyfillContent(), 'utf8');
-    process.stderr.write('');
   }
+  return target;
 }
 
 program
   .name('shadcn-utils')
-  .version('1.0.3')
+  .version('1.0.4')
   .option('--setup', 'Run setup wizard')
   .option('--model <name>', 'Override model for this session')
   .parse(process.argv);
@@ -44,6 +45,7 @@ const opts = program.opts();
 async function runSetup() {
   const { default: inquirer } = await import('inquirer');
   console.log('\n  shadcn-utils setup\n');
+
   const { modelChoice } = await inquirer.prompt([{
     type: 'list',
     name: 'modelChoice',
@@ -59,14 +61,31 @@ async function runSetup() {
     }]);
     model = custom.trim();
   }
+
   const { host } = await inquirer.prompt([{
     type: 'input',
     name: 'host',
     message: 'Ollama host:',
     default: 'http://localhost:11434'
   }]);
-  saveConfig({ model, host });
-  console.log(`\n  saved. model: ${model}\n`);
+
+  // ← الجديد: اسأل عن مسار المشروع
+  const { projectPath } = await inquirer.prompt([{
+    type: 'input',
+    name: 'projectPath',
+    message: 'Project path (absolute):',
+    default: process.cwd()
+  }]);
+
+  const resolvedPath = path.resolve(projectPath);
+  saveConfig({ model, host, projectPath: resolvedPath });
+
+  // عمل الملف فوراً عند الـ setup
+  ensurePolyfillFile(resolvedPath);
+
+  console.log(`\n  saved. model: ${model}`);
+  console.log(`  project: ${resolvedPath}`);
+  console.log(`  polyfills.runtime.js created ✓\n`);
   process.exit(0);
 }
 
@@ -79,8 +98,10 @@ async function main() {
     process.exit(1);
   }
 
-  // أول شي وقبل أي شي: عمل الملف
-  ensurePolyfillFile();
+  const projectPath = cfg.projectPath || process.cwd();
+
+  // عمل الملف فوراً
+  const targetFile = ensurePolyfillFile(projectPath);
 
   const model = opts.model || cfg.model;
   const host  = cfg.host || 'http://localhost:11434';
@@ -91,7 +112,7 @@ async function main() {
     process.exit(1);
   }
 
-  startWatcher(model, host);
+  startWatcher(model, host, targetFile);
 
   process.on('SIGINT', () => process.exit(0));
   process.on('SIGTERM', () => process.exit(0));
