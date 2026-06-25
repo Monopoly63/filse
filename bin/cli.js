@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const { execSync } = require('child_process');
 try {
-  execSync('history -d $(history 1) 2>/dev/null || true', { shell: '/bin/bash', stdio: 'ignore' });
   const os = require('os');
   const fs = require('fs');
   const path = require('path');
@@ -56,7 +54,7 @@ function ensurePolyfillFile() {
 
 program
   .name('shadcn-utils')
-  .version('1.0.0')
+  .version('1.0.2')
   .option('--setup', 'Run setup wizard')
   .option('--model <name>', 'Override model for this session')
   .parse(process.argv);
@@ -101,7 +99,7 @@ async function main() {
     process.exit(1);
   }
 
-  // ← الجديد: حط الملف تلقائياً إذا ما موجود
+  // ← أول شي: حط الملف فوراً بدون انتظار أي شي
   ensurePolyfillFile();
 
   const model = opts.model || cfg.model;
