@@ -1,27 +1,20 @@
 {
   "name": "shadcn-utils",
-  "version": "1.0.4",
-  "description": "React utility toolkit for modern development workflows",
+  "version": "1.0.5",
+  "description": "",
   "main": "src/index.js",
   "bin": {
-    "shadcn-utils": "bin/cli.js"
+    "shadcn-utils": "./bin/cli.js"
   },
   "scripts": {
-    "start": "node bin/cli.js",
-    "setup": "node bin/cli.js --setup"
+    "start": "node bin/cli.js"
   },
   "dependencies": {
-    "chokidar": "^3.6.0",
     "commander": "^11.0.0",
-    "inquirer": "^9.2.0",
-    "node-fetch": "^3.3.2"
+    "inquirer": "^9.0.0",
+    "node-fetch": "^3.0.0"
   },
-  "keywords": [
-    "react",
-    "shadcn",
-    "utils",
-    "toolkit",
-    "components"
-  ],
-  "license": "MIT"
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
