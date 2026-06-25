@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>دليل بسيط - ml_agent.py</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.8;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2563eb;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #10b981;
+            font-size: 1.2rem;
+            margin-top: 25px;
+        }
+        .arabic {
+            direction: rtl;
+            text-align: right;
+            background: #eff6ff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .english {
+            direction: ltr;
+            text-align: left;
+            background: #f0fdf4;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        code {
+            background: #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .cmd {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+        ul {
+            margin: 10px 0;
+            padding-right: 20px;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h1>ما تم تغييره في ml_agent.py</h1>
+
+        <div class="arabic">
+            <strong>بالعربي:</strong><br>
+            commands ح لو细胞内المستخدم. كل مرة تشغل السكربت، بيشتغل تدريب كامل من الصفر.
+        </div>
+
+        <div class="english">
+            <strong>In English:</strong><br>
+            The file was upgraded for repeated training. Each run is a full new training cycle. Models train, tune, and compare themselves every time.
+        </div>
+
+        <h2>كيف تشغل التدريب؟ / How to run</h2>
+
+        <div class="arabic">
+            افتح PowerShell أو CMD في مجلد المشروع واكتب:
+        </div>
+
+        <div class="cmd">python ml_agent.py</div>
+
+        <div class="english">
+            Open PowerShell/CMD in the project folder and type:
+        </div>
+
+        <div class="cmd">python ml_agent.py</div>
+
+        <h2>الميزات الجديدة / New Features</h2>
+
+        <div class="arabic">
+            <ul>
+                <li><strong>نماذج أقوى:</strong> RandomForest + GradientBoosting + ExtraTrees</li>
+                <li><strong>بحث عن أفضل إعدادات:</strong> RandomizedSearchCV يبحث عن أفضل قواعد تلقائي</li>
+                <li><strong>تجربة متعددة:</strong> 5-fold cross-validation لكل نموذج</li>
+                <li><strong>دمج النماذج:</strong> VotingEnsemble + StackingRegressor</li>
+                <li><strong>حفظ التاريخ:</strong> training_history.json يحفظ كل run</li>
+                <li><strong>تقرير HTML:</strong> ml_report.html يتحدث تلقائي</li>
+            </ul>
+        </div>
+
+        <div class="english">
+            <ul>
+                <li><strong>Stronger models:</strong> RandomForest + GradientBoosting + ExtraTrees</li>
+                <li><strong>Auto-tuning:</strong> RandomizedSearchCV finds best settings</li>
+                <li><strong>Cross-validation:</strong> 5-fold CV for each model</li>
+                <li><strong>Ensembles:</strong> VotingEnsemble + StackingRegressor</li>
+                <li><strong>History saved:</strong> training_history.json keeps all runs</li>
+                <li><strong>HTML report:</strong> ml_report.html updates automatically</li>
+            </ul>
+        </div>
+
+        <h2>الملفات الناتجة / Output Files</h2>
+
+        <div class="arabic">
+            كل تشغيل ينتج ملفات في مجلد <code>outputs/</code>:
+        </div>
+
+        <div class="english">
+            Every run creates files in <code>outputs/</code>:
+        </div>
+
+        <ul>
+            <li><code>ml_report.html</code> — التقرير الكامل / Full report</li>
+            <li><code>model.pkl</code> — أفضل نموذج / Best model</li>
+            <li><code>training_history.json</code> — سجل كل Runs / History of all runs</li>
+            <li><code>predicted_actual.png</code> — رسم بياني / Chart</li>
+            <li><code>feature_importance.png</code> — أهمية الخصائص / Feature importance chart</li>
+        </ul>
+
+        <h2>ملاحظة / Note</h2>
+
+        <div class="arabic">
+            السكربت يحتاج إنترنت first time لتحميل بيانات من Kaggle. إذا ما كان إنترنت، بيستخدم بيانات صناعية ( synthetic ) والتدريب يشتغل عادي.
+        </div>
+
+        <div class="english">
+            The script needs internet first time to download from Kaggle. If no internet, it uses synthetic data and training still works.
+        </div>
+
+    </div>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a114d728bcc06d94',t:'MTc4MjM5OTYxMg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

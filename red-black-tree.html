@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الشجرة الحمراء-السوداء · دورة الخوارزميات المتقدمة</title>
+<style>
+/* ═══════════════════════════════════════════
+   CSS VARIABLES & RESET
+   ═══════════════════════════════════════════ */
+:root {
+  --bg-base: #06060f;
+  --bg-surface: rgba(255, 255, 255, 0.03);
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-hover: rgba(255, 255, 255, 0.07);
+  --text-primary: #e8e8f5;
+  --text-secondary: #8888aa;
+  --text-muted: #5a5a7a;
+  --red: #ff3355;
+  --red-glow: #ff335580;
+  --red-soft: #ff335530;
+  --black: #1a1a2e;
+  --black-border: #3a3a5e;
+  --black-node-grad: radial-gradient(circle at 35% 35%, #3a3a6e, #1a1a2e 70%);
+  --red-node-grad: radial-gradient(circle at 35% 35%, #ff6680, #cc1133 70%);
+  --accent: #7b5eff;
+  --accent-glow: #7b5eff50;
+  --gold: #f0c060;
+  --green: #44dd88;
+  --line-color: #5a5a8a;
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --shadow-glow: 0 0 40px var(--accent-glow), 0 0 80px rgba(123,94,255,0.15);
+  --font-mono: 'Courier New', Courier, monospace;
+  --font-sans: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ═══════════════════════════════════════════
+   LIGHT THEME
+   ═══════════════════════════════════════════ */
+:root.light {
+  --bg-base: #f0f0f8;
+  --bg-surface: rgba(0, 0, 0, 0.03);
+  --glass-bg: rgba(0, 0, 0, 0.03);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-hover: rgba(0, 0, 0, 0.06);
+  --text-primary: #1a1a2e;
+  --text-secondary: #555570;
+  --text-muted: #888899;
+  --red: #d42040;
+  --red-glow: #d4204060;
+  --red-soft: #d4204025;
+  --black: #c0c0d8;
+  --black-border: #9090aa;
+  --black-node-grad: radial-gradient(circle at 35% 35%, #b0b0cc, #8080a0 70%);
+  --red-node-grad: radial-gradient(circle at 35% 35%, #ff5570, #cc1133 70%);
+  --accent: #5b3ecc;
+  --accent-glow: #5b3ecc30;
+  --gold: #b8902a;
+  --green: #20a060;
+  --line-color: #9999bb;
+}
+
+:root.light .navbar {
+  background: rgba(240, 240, 248, 0.8);
+}
+
+:root.light .tree-stage {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+:root.light .tree-stage::before {
+  background: radial-gradient(ellipse at 50% 120%, rgba(91, 62, 204, 0.06) 0%, transparent 70%);
+}
+
+:root.light .code-block {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+:root.light h2 {
+  background: linear-gradient(135deg, #1a1a2e 0%, #444466 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+:root.light .rot-code {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+:root.light .output-box {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+:root.light .data-table th {
+  background: rgba(91, 62, 204, 0.1);
+}
+
+:root.light .node-text {
+  fill: #fff;
+}
+
+:root.light .tree-edge {
+  stroke: #9090aa;
+}
+
+:root.light ::-webkit-scrollbar-track {
+  background: #e0e0f0;
+}
+
+/* ═══════════════════════════════════════════
+   ARABIC / RTL
+   ═══════════════════════════════════════════ */
+[dir="rtl"] {
+  font-family: 'Segoe UI', 'Noto Sans Arabic', system-ui, sans-serif;
+}
+
+[dir="rtl"] .navbar {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .nav-links {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .hero-badge {
+  direction: rtl;
+}
+
+[dir="rtl"] .hero h1 {
+  direction: rtl;
+}
+
+[dir="rtl"] .hero-sub {
+  direction: rtl;
+}
+
+[dir="rtl"] .what-grid {
+  direction: rtl;
+}
+
+[dir="rtl"] .prop-item {
+  direction: rtl;
+}
+
+[dir="rtl"] .step {
+  direction: rtl;
+}
+
+[dir="rtl"] .app-card {
+  direction: rtl;
+}
+
+[dir="rtl"] .vs-strip {
+  direction: rtl;
+}
+
+[dir="rtl"] .code-block {
+  direction: ltr;
+  text-align: left;
+}
+
+[dir="rtl"] .data-table {
+  direction: rtl;
+}
+
+[dir="rtl"] .data-table th {
+  text-align: right;
+}
+
+/* ═══════════════════════════════════════════
+   NAVBAR BUTTONS
+   ═══════════════════════════════════════════ */
+.nav-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.nav-btn {
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: inherit;
+  transition: all 0.25s;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.nav-btn:hover {
+  color: var(--text-primary);
+  background: var(--glass-hover);
+  border-color: rgba(255,255,255,0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg-base);
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+/* ═══════════════════════════════════════════
+   BACKGROUND CANVAS
+   ═══════════════════════════════════════════ */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════
+   NAVBAR
+   ═══════════════════════════════════════════ */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 40px;
+  background: rgba(6, 6, 15, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.nav-logo .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 12px var(--red-glow);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.84rem;
+  padding: 6px 14px;
+  border-radius: 20px;
+  transition: all 0.25s;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: var(--text-primary);
+  background: var(--glass-hover);
+}
+
+/* ═══════════════════════════════════════════
+   LAYOUT WRAPPER
+   ═══════════════════════════════════════════ */
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+section {
+  margin-top: 100px;
+}
+
+.section-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+  background: linear-gradient(135deg, #fff 0%, #b0b0d0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 14px;
+}
+
+/* ═══════════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding-top: 80px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border-radius: 30px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+  backdrop-filter: blur(10px);
+}
+
+.hero-badge .badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 8px var(--red-glow);
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+}
+
+.hero h1 .highlight-red {
+  color: var(--red);
+  text-shadow: 0 0 60px var(--red-glow), 0 0 120px var(--red-soft);
+  position: relative;
+  display: inline-block;
+}
+
+.hero h1 .highlight-white {
+  color: #fff;
+}
+
+.hero-sub {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  padding: 13px 28px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s cubic-bezier(.4,0,.2,1);
+}
+
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+  box-shadow: 0 4px 24px var(--red-soft), 0 0 0 0 var(--red);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 30px var(--red-glow), 0 0 0 4px var(--red-soft);
+  transform: translateY(-2px);
+}
+
+.btn-glass {
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+}
+
+.btn-glass:hover {
+  background: var(--glass-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ═══════════════════════════════════════════
+   GLASS CARD
+   ═══════════════════════════════════════════ */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  backdrop-filter: blur(16px);
+  transition: all 0.3s cubic-bezier(.4,0,.2,1);
+}
+
+.glass-card:hover {
+  background: var(--glass-hover);
+  border-color: rgba(255,255,255,0.14);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3), var(--shadow-glow);
+  transform: translateY(-2px);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 32px;
+}
+
+/* ═══════════════════════════════════════════
+   WHAT IS
+   ═══════════════════════════════════════════ */
+.what-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+@media (max-width: 700px) { .what-grid { grid-template-columns: 1fr; } }
+
+.key-word {
+  display: inline;
+  background: var(--red-soft);
+  color: var(--red);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.95em;
+}
+
+/* ═══════════════════════════════════════════
+   PROPERTIES (5 rules)
+   ═══════════════════════════════════════════ */
+.props-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.prop-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 22px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s;
+  cursor: default;
+}
+
+.prop-item:hover, .prop-item.active {
+  background: var(--glass-hover);
+  border-color: rgba(255,255,255,0.14);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+  transform: translateX(4px);
+}
+
+.prop-num {
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  background: var(--red-soft);
+  color: var(--red);
+  border: 1px solid var(--red);
+}
+
+.prop-text {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.prop-text strong {
+  color: var(--text-primary);
+}
+
+/* ═══════════════════════════════════════════
+   NODE STRUCTURE VISUAL
+   ═══════════════════════════════════════════ */
+.code-block {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  padding: 22px 26px;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  position: relative;
+  margin-top: 18px;
+}
+
+.code-block::before {
+  content: 'struct';
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.kw { color: #c792ea; }
+.tp { color: #82aaff; }
+.nm { color: #f78c6c; }
+.cm { color: #546e7a; font-style: italic; }
+.st { color: #c3e88d; }
+.nu { color: #f78c6c; }
+
+/* ═══════════════════════════════════════════
+   COLOR LEGEND
+   ═══════════════════════════════════════════ */
+.color-legend {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  box-shadow: 0 0 14px rgba(0,0,0,0.5);
+}
+
+.legend-dot.red {
+  background: var(--red);
+  box-shadow: 0 0 16px var(--red-glow);
+}
+
+.legend-dot.black {
+  background: var(--black);
+  border: 2px solid var(--black-border);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05), 0 0 12px rgba(58,58,94,0.5);
+}
+
+/* ═══════════════════════════════════════════
+   TREE VISUALIZER
+   ═══════════════════════════════════════════ */
+.tree-stage {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius);
+  padding: 40px 20px 30px;
+  position: relative;
+  overflow: hidden;
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tree-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 120%, rgba(123,94,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+#tree-svg {
+  width: 100%;
+  height: 340px;
+}
+
+.tree-node {
+  cursor: pointer;
+  transition: filter 0.3s;
+}
+
+.tree-node:hover .node-circle { filter: brightness(1.3); }
+
+.node-circle-red {
+  fill: url(#redGrad);
+  stroke: #ff6680;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 10px var(--red-glow));
+}
+
+.node-circle-black {
+  fill: url(#blackGrad);
+  stroke: var(--black-border);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 6px rgba(58,58,94,0.8));
+}
+
+.node-text {
+  fill: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+
+.node-color-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+
+.tree-edge {
+  stroke: var(--line-color);
+  stroke-width: 1.8;
+  fill: none;
+  opacity: 0.7;
+}
+
+.tree-highlight-edge {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-dasharray: 6 3;
+  animation: dash-flow 0.6s linear infinite;
+}
+
+@keyframes dash-flow {
+  to { stroke-dashoffset: -9; }
+}
+
+@keyframes node-pop {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.node-glow {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.8; r: 22; }
+  50% { opacity: 0.4; r: 28; }
+}
+
+.tree-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* ═══════════════════════════════════════════
+   TABS
+   ═══════════════════════════════════════════ */
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--glass-border);
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent);
+}
+
+.tab-panel { display: none; animation: fadeUp 0.35s ease; }
+.tab-panel.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════
+   STEPS / PROCEDURE
+   ═══════════════════════════════════════════ */
+.steps {
+  counter-reset: step;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 18px;
+  align-items: start;
+  padding: 18px 22px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(10px);
+  counter-increment: step;
+  transition: all 0.3s;
+}
+
+.step:hover {
+  background: var(--glass-hover);
+  transform: translateX(4px);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.step::before {
+  content: counter(step);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent) 0%, #9d7aff 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-top: 2px;
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.step-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.step-body {
+  color: var(--text-secondary);
+  font-size: 0.93rem;
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════
+   CASE CARDS (Insertion Cases)
+   ═══════════════════════════════════════════ */
+.case-label {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+.case-label.uncle-red { background: rgba(68,221,136,0.15); color: var(--green); }
+.case-label.uncle-black { background: rgba(240,192,96,0.15); color: var(--gold); }
+
+/* ═══════════════════════════════════════════
+   COMPLEXITY TABLE
+   ═══════════════════════════════════════════ */
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 20px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+}
+
+.data-table th {
+  background: rgba(123,94,255,0.12);
+  color: var(--text-primary);
+  font-weight: 600;
+  text-align: left;
+  padding: 13px 20px;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.data-table td {
+  padding: 13px 20px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--glass-hover); }
+
+.data-table .best { color: var(--green); font-weight: 600; }
+.data-table .worst { color: var(--red); font-weight: 600; }
+.data-table .avg { color: var(--gold); font-weight: 600; }
+
+/* ═══════════════════════════════════════════
+   APPLICATIONS
+   ═══════════════════════════════════════════ */
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.app-card {
+  position: relative;
+  padding: 22px 22px 20px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  transition: all 0.3s;
+  overflow: hidden;
+}
+
+.app-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(123,94,255,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.app-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3), var(--shadow-glow);
+  border-color: rgba(255,255,255,0.14);
+}
+
+.app-icon {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+.app-card h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.app-card p {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  margin-bottom: 0;
+}
+
+/* ═══════════════════════════════════════════
+   ROTATION VISUAL
+   ═══════════════════════════════════════════ */
+.rot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+@media (max-width: 700px) { .rot-grid { grid-template-columns: 1fr; } }
+
+.rot-box {
+  text-align: center;
+  padding: 24px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+}
+
+.rot-arrow {
+  font-size: 2rem;
+  color: var(--accent);
+  margin: 10px 0;
+  animation: arrow-bounce 1.2s ease-in-out infinite;
+}
+
+@keyframes arrow-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.rot-code {
+  display: inline-block;
+  text-align: left;
+  background: rgba(0,0,0,0.4);
+  padding: 14px 18px;
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* ═══════════════════════════════════════════
+   IN-ORDER / TRAVERSAL
+   ═══════════════════════════════════════════ */
+.traversal-tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.t-tag {
+  padding: 10px 20px;
+  border-radius: 24px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  transition: all 0.25s;
+  cursor: pointer;
+}
+
+.t-tag:hover, .t-tag.active {
+  background: rgba(123,94,255,0.18);
+  border-color: var(--accent);
+  color: var(--text-primary);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.output-box {
+  margin-top: 18px;
+  padding: 16px 22px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+
+/* ═══════════════════════════════════════════
+   ALGORITHM PSEUDO
+   ═══════════════════════════════════════════ */
+.alg-steps {
+  counter-reset: alg;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.alg-step {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 16px;
+  background: var(--glass-bg);
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--glass-border);
+  counter-increment: alg;
+}
+
+.alg-step::before {
+  content: counter(alg);
+  padding-top: 2px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.alg-step span {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════
+   COMPARISON STRIP
+   ═══════════════════════════════════════════ */
+.vs-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+@media (max-width: 700px) { .vs-strip { grid-template-columns: 1fr; } }
+
+.vs-card {
+  padding: 22px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+}
+
+.vs-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius:provider 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.vs-badge.rbt { background: rgba(255,51,85,0.18); color: var(--red); }
+.vs-badge.avl { background: rgba(68,221,136,0.15); color: var(--green); }
+
+/* ═══════════════════════════════════════════
+   GLOW ORBS DECORATIVE
+   ═══════════════════════════════════════════ */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.orb-red { background: var(--red); }
+.orb-purple { background: var(--accent); }
+
+/* ═══════════════════════════════════════════
+   SCROLL REVEAL
+   ═══════════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s cubic-bezier(.4,0,.2,1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════ */
+footer {
+  margin-top: 120px;
+  padding: 40px 0;
+  border-top: 1px solid var(--glass-border);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════════
+   MISC UTILS
+   ═══════════════════════════════════════════ */
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+.gap-12 { gap: 12px; }
+.text-accent { color: var(--accent); }
+.text-red { color: var(--red); }
+.text-gold { color: var(--gold); }
+.text-green { color: var(--green); }
+.mono { font-family: var(--font-mono); font-size: 0.9em; }
+.divider {
+  height: 1px;
+  background: var(--glass-border);
+  margin: 60px 0;
+}
+</style>
+</head>
+<body>
+
+<!-- Particle BG -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a class="nav-logo" href="#">
+    <span class="dot"></span>
+            <span data-i18n="navLogo">الشجرة الحمراء-السوداء · الدورة المتقدمة</span>
+  </a>
+  <ul class="nav-links" data-i18n-nav>
+            <li><a href="#what-is"><span data-i18n="navWhat">ما هي؟</span></a></li>
+            <li><a href="#properties"><span data-i18n="navProps">الخصائص</span></a></li>
+            <li><a href="#visualizer"><span data-i18n="navViz">المرئيات</span></a></li>
+            <li><a href="#insertion"><span data-i18n="navInsert">الإدراج</span></a></li>
+            <li><a href="#deletion"><span data-i18n="navDelete">الحذف</span></a></li>
+            <li><a href="#cases"><span data-i18n="navCases">الحالات</span></a></li>
+            <li><a href="#complexity"><span data-i18n="navComplex">التعقيد</span></a></li>
+  </ul>
+  <div class="nav-controls">
+    <button class="nav-btn" id="theme-btn" onclick="toggleTheme()">
+      <span id="theme-icon">☀</span>
+              <span data-i18n="themeLight">فاتح</span>
+            </button>
+            <button class="nav-btn" id="lang-btn" onclick="toggleLang()">
+              English
+            </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+            <span data-i18n="heroBadge">شجرة متوازنة · تعقيد O(log n)</span>
+          </div>
+          <h1>
+            <span class="highlight-red" data-i18n="heroRed">الحمراء</span><span class="highlight-white">-السوداء</span><br>
+            <span class="highlight-white" data-i18n="heroTree">شجرة</span>
+          </h1>
+          <p class="hero-sub" data-i18n="heroSub">
+            رحلة تعليمية كاملة من الأساسيات إلى الحالات المتقدمة مصممة للطلاب الذين يرغبون في إتقان خوارزمية الشجرة الحمراء-السوداء.
+          </p>
+  <div class="hero-actions">
+          <a href="#visualizer" class="btn btn-primary" data-i18n="heroBtn1">
+            ▶ &nbsp;جرب المرئيات
+          </a>
+          <a href="#what-is" class="btn btn-glass" data-i18n="heroBtn2">
+            ابدأ التعلم ↓
+          </a>
+  </div>
+</section>
+
+<div class="page">
+
+<!-- WHAT IS -->
+    <section id="what-is" class="reveal">
+        <p class="section-label" data-i18n="ch1Label">الفصل الأول · الأساسيات</p>
+        <h2 data-i18n="whatTitle">ما هي الشجرة الحمراء-السوداء؟</h2>
+    <div>
+      <p data-i18n="whatP1">
+        A <span class="key-word">Red-Black Tree</span> is a <strong>self-balancing binary search tree</strong> where each node carries an extra bit of color — <span class="key-word">Red</span> or <span class="key-word">Black</span>.
+      </p>
+      <p data-i18n="whatP2">
+        Invented by <strong>Rudolf Bayer</strong> in 1972 (as "symmetric binary B-trees"), it was later renamed. It's the underlying structure in many real systems: <strong>Java TreeMap</strong>, <strong>C++ std::map</strong>, <strong>Linux kernel</strong> (CFS scheduler), and <strong>MySQL</strong> indexes.
+      </p>
+      <p data-i18n="whatP3">
+        The color property is not just cosmetic. It encodes a set of rules that guarantee the tree remains approximately balanced at all times — keeping every operation at <strong>O(log n)</strong> without the expensive full rebalancing of AVL trees.
+      </p>
+    </div>
+    <div class="glass-card">
+      <h3 style="color:var(--red);" data-i18n="whatCoreIdea">⚡ Core Idea</h3>
+      <p data-i18n="whatCoreEach">Each node is either <strong>RED</strong> or <strong>BLACK</strong>.</p>
+      <p data-i18n="whatCoreRules">By enforcing 5 simple rules, the tree guarantees:</p>
+      <ul style="color:var(--text-secondary); padding-left:18px; font-size:0.93rem; line-height:1.8;">
+        <li data-i18n="whatCoreL1">Longest path ≤ 2× shortest path</li>
+        <li data-i18n="whatCoreL2">Height ≤ <strong>2 log₂(n+1)</strong></li>
+        <li data-i18n="whatCoreL3">Every operation stays O(log n)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Node Structure -->
+  <h3 class="mt-32" data-i18n="nodeStructTitle">Node Structure</h3>
+  <p data-i18n="nodeStructSub">Every node in a Red-Black Tree stores:</p>
+  <div class="code-block">
+<span class="kw">struct</span> <span class="tp">RBNode</span> {
+  <span class="tp">int</span>  key;           <span class="cm">// value stored in the node</span>
+  <span class="tp">Color</span> color;     <span class="cm">// RED or BLACK</span>
+  <span class="tp">RBNode</span> *left;    <span class="cm">// left child</span>
+  <span class="tp">RBNode</span> *right;   <span class="cm">// right child</span>
+  <span class="tp">RBNode</span> *parent;  <span class="cm">// parent pointer (needed for fixup)</span>
+};
+  </div>
+
+  <div class="color-legend">
+    <div class="legend-item">
+      <span class="legend-dot red"></span>
+      <span data-i18n="legendRed"><strong class="text-red">RED</strong> node — allows violation of BST height rules temporarily</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot black"></span>
+      <span data-i18n="legendBlack"><strong style="color:#aaa;">BLACK</strong> node — enforces black-height constraints</span>
+    </div>
+  </div>
+  <p class="mt-16" data-i18n="parentPointer">
+    The <span class="mono text-accent">parent pointer</span> is essential — insertion and deletion fixup algorithms must walk <em>up</em> the tree toward the root.
+  </p>
+</section>
+
+<!-- PROPERTIES -->
+<section id="properties" class="reveal">
+  <p class="section-label" data-i18n="ch2Label">Chapter 02 · The Rules</p>
+  <h2 data-i18n="propsTitle">Five Properties (Red-Black Rules)</h2>
+  <p data-i18n="propsSub">Every valid Red-Black Tree must satisfy exactly these five properties:</p>
+  <ul class="props-list">
+    <li class="prop-item">
+      <span class="prop-num">1</span>
+      <div class="prop-text" data-i18n="prop1">
+        Every node is either <strong>Red</strong> or <strong>Black</strong>.
+      </div>
+    </li>
+    <li class="prop-item">
+      <span class="prop-num">2</span>
+      <div class="prop-text" data-i18n="prop2">
+        The <strong>root is always Black</strong>. (This prevents root-based violations of property 4.)
+      </div>
+    </li>
+    <li class="prop-item">
+      <span class="prop-num">3</span>
+      <div class="prop-text" data-i18n="prop3">
+        Every <strong>leaf (NIL)</strong> is considered <strong>Black</strong>. We model this as a sentinel node in practice.
+      </div>
+    </li>
+    <li class="prop-item">
+      <span class="prop-num">4</span>
+      <div class="prop-text" data-i18n="prop4">
+        <strong>Red nodes cannot have Red children</strong>. No two consecutive Red nodes in any path.
+      </div>
+    </li>
+    <li class="prop-item">
+      <span class="prop-num">5</span>
+      <div class="prop-text" data-i18n="prop5">
+        Every path from a node to its descendant leaves has the <strong>same number of Black nodes</strong> (Black-Height).
+      </div>
+    </li>
+  </ul>
+
+  <div class="glass-card mt-24">
+    <h3 data-i18n="propsWhyTitle">💡 Why "5 Properties" Why not a height constraint?</h3>
+    <p data-i18n="propsWhyText">
+      Properties 1–5 <em>imply</em> that the longest path from root to any leaf is at most <strong>2×</strong> the shortest path. This is proven from the black-height rule: any path with the minimum black nodes can have at most twice as many red interleaved nodes. This is why insertion/deletion stay
+      <span class="mono text-accent">O(log n)</span> — the tree is never allowed to become a linked list.
+    </p>
+  </div>
+</section>
+
+<!-- INTERACTIVE VISUALIZER -->
+<section id="visualizer" class="reveal">
+  <p class="section-label" data-i18n="ch3Label">Chapter 03 · Interactive Visualizer</p>
+  <h2 data-i18n="vizTitle">Explore the Tree Live</h2>
+  <p data-i18n="vizSub">Click on any node to see how insertion and rotation works in real-time. Use the buttons below to perform actions.</p>
+
+  <div class="tree-stage" id="tree-stage">
+    <svg id="tree-svg" viewBox="0 0 800 340">
+      <defs>
+        <radialGradient id="redGrad" cx="35%" cy="35%">
+          <stop offset="0%" stop-color="#ff7788"/>
+          <stop offset="100%" stop-color="#c01030"/>
+        </radialGradient>
+        <radialGradient id="blackGrad" cx="35%" cy="35%">
+          <stop offset="0%" stop-color="#4a4a7e"/>
+          <stop offset="100%" stop-color="#1a1a2e"/>
+        </radialGradient>
+        <filter id="glow">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="tree-controls">
+    <button class="btn btn-primary" onclick="insertNode()" data-i18n="vizInsert">+ Insert Random</button>
+    <button class="btn btn-glass" onclick="resetTree()" data-i18n="vizReset">↺ Reset</button>
+    <button class="btn btn-glass" onclick="animateStep()" data-i18n="vizStep">▶ Step Demo</button>
+    <button class="btn btn-glass" onclick="toggleHighlight()" data-i18n="vizHighlight">🔦 Highlight Path</button>
+  </div>
+  <p style="text-align:center; margin-top:14px; font-size:0.84rem; color:var(--text-muted);" data-i18n="vizHint">
+    Hover over nodes to explore · <span class="text-red">Red</span> nodes glow · <span style="color:#aaa;">Black</span> nodes are solid
+  </p>
+</section>
+
+<!-- INSERTION -->
+<section id="insertion" class="reveal">
+  <p class="section-label" data-i18n="ch4Label">Chapter 04 · Operations</p>
+  <h2 data-i18n="insertTitle">Insertion (Insert-Fixup)</h2>
+  <p data-i18n="insertSub">Insertion is a two-phase process: standard BST insert in O(log n), then fix any violations.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div></div>
+      <div>
+        <div class="step-title" data-i18n="insStep1Title">1. Standard BST Insert</div>
+        <div class="step-body" data-i18n="insStep1Body">Insert the new node <strong>colored RED</strong> using normal BST rules. The RED color signals that we <em>might</em> have violated property 4 (no consecutive reds), and the fixup routine must handle it.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div></div>
+      <div>
+        <div class="step-title" data-i18n="insStep2Title">2. Run Insert-Fixup</div>
+        <div class="step-body" data-i18n="insStep2Body">Walk <strong>up</strong> the tree from the new node. If its parent is also Red, determine the <em>uncle</em>'s color and apply one of the 3 cases below. Stop when the root is reached.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div></div>
+      <div>
+        <div class="step-title" data-i18n="insStep3Title">3. Fix the Root</div>
+        <div class="step-body" data-i18n="insStep3Body">After fixup, always color the root <strong>Black</strong>. This enforces property 2.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs for insertion cases -->
+  <div class="mt-32">
+    <p class="section-label" data-i18n="threeCasesLabel">Three Cases</p>
+    <div class="tabs" id="ins-tabs">
+      <button class="tab-btn active" onclick="switchTab('ins','case-a')" data-i18n="caseATab">Case A · Uncle Red</button>
+      <button class="tab-btn" onclick="switchTab('ins','case-b')" data-i18n="caseBTab">Case B · Left-Left</button>
+      <button class="tab-btn" onclick="switchTab('ins','case-c')" data-i18n="caseCTab">Case C · Right-Left</button>
+    </div>
+
+    <div class="tab-panel active" id="ins-case-a">
+      <div class="glass-card">
+        <span class="case-label uncle-red" data-i18n="caseALabel">CASE A · UNCLE IS RED</span>
+        <h3 data-i18n="caseATitle">Recolor (Zig-Zig or Zig-Zag)</h3>
+        <p data-i18n="caseAText">If the <strong>uncle is Red</strong>: simply recolor the parent and uncle as Black, recolor the grandparent as red, and continue fixing <em>up from grandparent</em>. No rotations needed.</p>
+        <div class="code-block mt-16">
+<span class="st">if</span> (uncle.color == <span class="nu">RED</span>) {<br>
+&nbsp;&nbsp;parent.color  = <span class="nu">BLACK</span>;<br>
+&nbsp;&nbsp;uncle.color   = <span class="nu">BLACK</span>;<br>
+&nbsp;&nbsp;grandp.color  = <span class="nu">RED</span>;<br>
+&nbsp;&nbsp;node = grandp; <span class="cm">// continue up</span><br>
+}
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="ins-case-b">
+      <div class="glass-card">
+        <span class="case-label uncle-black" data-i18n="caseBLabel">CASE B · LINE (Left-Left)</span>
+        <h3 data-i18n="caseBTitle">Right Rotation + Recolor</h3>
+        <p data-i18n="caseBText">If the uncle is <strong>Black</strong> and the node + parent are in a <strong>straight line</strong> (node is left-child of left-child OR right-child of right-child): do a <strong>single rotation</strong> in the opposite direction, then swap colors.</p>
+        <div class="code-block mt-16">
+<span class="st">// Left-Left case:<br>
+parent.color  = <span class="nu">BLACK</span>;<br>
+grandp.color = <span class="nu">RED</span>;<br>
+right_rotate(grandp);
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="ins-case-c">
+      <div class="glass-card">
+        <span class="case-label uncle-black" data-i18n="caseCLabel">CASE C · TRIANGLE (Right-Left)</span>
+        <h3 data-i18n="caseCTitle">Left Rotation + Right Rotation</h3>
+        <p data-i18n="caseCText">If the uncle is <strong>Black</strong> and node + parent form a <strong>triangle</strong> (node is right-child of left-child OR left-child of right-child): rotate on the parent first to convert into Case B, then handle Case B.</p>
+        <div class="code-block mt-16">
+<span class="st">// Right-Left case:<br>
+node = parent; <span class="cm">// start from parent</span><br>
+left_rotate(node);  <span class="cm">// now becomes Left-Left</span><br>
+<span class="cm">// fall into Case B...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DELETION -->
+<section id="deletion" class="reveal">
+  <p class="section-label" data-i18n="ch5Label">Chapter 05 · Advanced Operation</p>
+  <h2 data-i18n="delTitle">Deletion (Delete-Fixup)</h2>
+  <p data-i18n="delSub">
+    Deletion is the hardest operation. When you remove a <strong>Black</strong> node, you either reduce the black-height of paths going through that subtree — violating <em>property 5</em>. Fixup must restore it.
+  </p>
+
+  <div class="two-col" style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:28px;">
+    <div class="glass-card">
+      <h3 data-i18n="delRed">🔴 If you delete a RED node</h3>
+      <p data-i18n="delRedText">The tree stays balanced. No fixup needed. Simply splice it out like a normal BST node.</p>
+    </div>
+    <div class="glass-card">
+      <h3 data-i18n="delBlack">⚫ If you delete a BLACK node</h3>
+      <p data-i18n="delBlackText">A <em>double black</em> phenomenon appears. We must redistribute an extra Black from a sibling through <strong>rotations + recoloring</strong>. This triggers the famous <strong>6 deletion cases</strong>.</p>
+    </div>
+  </div>
+
+  <h3 class="mt-32" data-i18n="delCasesTitle">Deletion Cases (6 Patterns)</h3>
+  <div class="steps">
+    <div class="step">
+      <div></div>
+      <div>
+        <div class="step-title" data-i18n="delCase1Title">Case D1: Sibling is Red</div>
+        <div class="step-body" data-i18n="delCase1Body">Recolor parent + sibling, rotate at parent. The new sibling (former parent) is now Black — drops into D2, D3, or D4.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div></div>
+      <div>
+        <div class="step-title" data-i18n="delCase2Title">Case D2: Sibling is Black, both nephews are Black</div>
+        <div class="step-body" data-i18n="delCase2Body">Pull Black from sibling onto parent (color sibling Red, parent Black). The double-Black moves up to parent.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div></div>
+      <div>
+        <div class="step-title" data-i18n="delCase3Title">Case D3: Sibling Black, far nephew Black, near nephew Red</div>
+        <div class="step-body" data-i18n="delCase3Body">Rotate at sibling to convert to Case D4.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div></div>
+      <div>
+        <div class="step-title" data-i18n="delCase4Title">Case D4: Sibling Black, far nephew Red</div>
+        <div class="step-body" data-i18n="delCase4Body">Rotate at parent, recolor parent & sibling with the near nephew Black. This absorbs the double-Black.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROTATIONS -->
+<section id="rotations" class="reveal">
+  <p class="section-label" data-i18n="ch6Label">Chapter 06 · Building Blocks</p>
+  <h2 data-i18n="rotTitle">Left & Right Rotations</h2>
+  <p data-i18n="rotSub">Rotations are the atomic structural operations that preserve the BST ordering while changing the tree's shape. Together with recoloring, they fix violations.</p>
+
+  <div class="rot-grid">
+    <div class="rot-box">
+      <div class="step-title" data-i18n="rotRightTitle">Right Rotation (on X)</div>
+      <div class="rot-arrow">↻</div>
+      <p style="color:var(--text-secondary); font-size:0.88rem; margin-top:8px;" data-i18n="rotRightSub">Used when heavy-left subtree pulls tree left</p>
+      <div class="rot-code">
+X = root<br>
+Y = X.left<br>
+X.left = Y.right<br>
+Y.right = X<br>
+<span class="text-accent">return Y as new root</span>
+      </div>
+    </div>
+    <div class="rot-box">
+      <div class="step-title" data-i18n="rotLeftTitle">Left Rotation (on X)</div>
+      <div class="rot-arrow">↺</div>
+      <p style="color:var(--text-secondary); font-size:0.88rem; margin-top:8px;" data-i18n="rotLeftSub">Used when heavy-right subtree pulls tree right</p>
+      <div class="rot-code">
+X = root<br>
+Y = X.right<br>
+X.right = Y.left<br>
+Y.left = X<br>
+<span class="text-accent">return Y as new root</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-card mt-24">
+    <h3 data-i18n="rotKeyTitle">🎯 Key Property of Rotations</h3>
+    <p data-i18n="rotKeyText">Rotations run in <span class="mono text-accent">O(1)</span> — just pointer reassignments. They <strong>do not</strong> touch the rest of the tree or change any keys. BST ordering is preserved because the middle node is simply elevated, and its former single child becomes the dangling subtree of its former parent.</p>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section id="comparison" class="reveal">
+  <p class="section-label" data-i18n="ch7Label">Chapter 07 · Which One?</p>
+  <h2 data-i18n="compTitle">Red-Black Tree vs AVL Tree</h2>
+  <p data-i18n="compSub">Both are self-balancing BSTs. They differ in <strong>when</strong> and <strong>how much</strong> they rebalance.</p>
+
+  <div class="vs-strip">
+    <div class="vs-card">
+      <span class="vs-badge rbt" data-i18n="compRbtBadge">RED-BLACK TREE</span>
+      <ul style="color:var(--text-secondary); font-size:0.9rem; padding-left:18px; line-height:1.8;">
+        <li data-i18n="compRbtL1">Max height: <strong>≈ 2 log₂ n</strong></li>
+        <li data-i18n="compRbtL2">Worst insert: <strong>O(log n)</strong></li>
+        <li data-i18n="compRbtL3">At most <strong>2 rotations</strong> per insert</li>
+        <li data-i18n="compRbtL4">Cheaper rebalancing</li>
+        <li data-i18n="compRbtL5">Better for <strong>write-heavy</strong> workloads</li>
+      </ul>
+    </div>
+    <div class="vs-card">
+      <span class="vs-badge avl" data-i18n="compAvlBadge">AVL TREE</span>
+      <ul style="color:var(--text-secondary); font-size:0.9rem; padding-left:18px; line-height:1.8;">
+        <li data-i18n="compAvlL1">Max height: <strong>≈ 1.44 log₂ n</strong></li>
+        <li data-i18n="compAvlL2">Worst insert: <strong>O(log n)</strong></li>
+        <li data-i18n="compAvlL3">Up to <strong>O(log n) rotations</strong> (≈1.44 average)</li>
+        <li data-i18n="compAvlL4">Faster lookups (stricter balance)</li>
+        <li data-i18n="compAvlL5">Better for <strong>read-heavy</strong> workloads</li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top:16px; font-size:0.88rem; color:var(--text-muted);" data-i18n="compNote">
+    C++ <span class="mono">std::map</span> uses Red-Black. C++ <span class="mono">std::set</span> also uses Red-Black. Java <span class="mono">TreeMap</span> follows suit. This is the industry standard for ordered maps.
+  </p>
+</section>
+
+<!-- COMPLEXITY -->
+<section id="complexity" class="reveal">
+  <p class="section-label" data-i18n="ch8Label">Chapter 08 · Performance</p>
+  <h2 data-i18n="complexTitle">Time & Space Complexity</h2>
+  <p data-i18n="complexSub">Because the tree stays balanced within a constant factor of the optimal height, every operation runs in logarithmic time.</p>
+
+  <div class="glass-card">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th data-i18n="thOp">Operation</th>
+          <th data-i18n="thBest">Best</th>
+          <th data-i18n="thAvg">Average</th>
+          <th data-i18n="thWorst">Worst</th>
+          <th data-i18n="thNotes">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong class="text-accent" data-i18n="opSearch">Search</strong></td>
+          <td class="best">O(1)</td>
+          <td class="avg">O(log n)</td>
+          <td class="worst">O(log n)</td>
+          <td>Traverses height path</td>
+        </tr>
+        <tr>
+          <td><strong class="text-accent" data-i18n="opInsert">Insert</strong></td>
+          <td class="best">O(log n)</td>
+          <td class="avg">O(log n)</td>
+          <td class="worst">O(log n)</td>
+          <td data-i18n="opInsertNote">+ ≤2 rotations + O(1) fixup</td>
+        </tr>
+        <tr>
+          <td><strong class="text-accent" data-i18n="opDelete">Delete</strong></td>
+          <td class="best">O(log n)</td>
+          <td class="avg">O(log n)</td>
+          <td class="worst">O(log n)</td>
+          <td data-i18n="opDeleteNote">+ ≤3 rotations + O(log n) fixup</td>
+        </tr>
+        <tr>
+          <td><strong class="text-accent" data-i18n="opMinMax">Find Min/Max</strong></td>
+          <td class="best">O(log n)</td>
+          <td class="avg">O(log n)</td>
+          <td class="worst">O(log n)</td>
+          <td data-i18n="opMinMaxNote">Follow leftmost/rightmost path</td>
+        </tr>
+        <tr>
+          <td><strong class="text-accent" data-i18n="opTraverse">Traverse (all nodes)</strong></td>
+          <td class="best">O(n)</td>
+          <td class="avg">O(n)</td>
+          <td class="worst">O(n)</td>
+          <td data-i18n="opTraverseNote">Inorder = sorted output</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="mt-24" data-i18n="spaceNote">
+    <strong>Space complexity is O(n)</strong> — each node stores 5 fields. No extra heap beyond the node storage. Call-stack for recursive operations is ≤ tree height = <span class="mono text-accent">O(log n)</span>.
+  </p>
+</section>
+
+<!-- TRAVERSAL -->
+<section id="traversal" class="reveal">
+  <p class="section-label" data-i18n="ch9Label">Chapter 09 · Traversals</p>
+  <h2 data-i18n="travTitle">Traversal Orders</h2>
+  <p data-i18n="travSub">Like all BSTs, Red-Black Trees support all standard traversals. The <strong>Inorder</strong> traversal yields a sorted sequence of keys.</p>
+  <p data-i18n="travTry">Try clicking the traversal buttons to see what the output looks like for our sample tree:</p>
+
+  <div class="traversal-tags" id="traversal-btns">
+    <span class="t-tag active" onclick="showTraversal('ll')" data-i18n="travIn">📥 Inorder (L-R)</span>
+    <span class="t-tag" onclick="showTraversal('pre')" data-i18n="travPre">⬆ Preorder (Node-L-R)</span>
+    <span class="t-tag" onclick="showTraversal('post')" data-i18n="travPost">⬇ Postorder (L-R-Node)</span>
+    <span class="t-tag" onclick="showTraversal('bfs')" data-i18n="travBfs">↔ BFS (level-order)</span>
+  </div>
+
+  <div class="output-box" id="traversal-output">
+    10 → 20 → 30 → 40 → 50 → 60 → 70 → 80
+  </div>
+</section>
+
+<!-- PSEUDOCODE -->
+<section id="pseudocode" class="reveal">
+  <p class="section-label" data-i18n="ch10Label">Chapter 10 · Implementation</p>
+  <h2 data-i18n="pseudoTitle">Core Pseudocode</h2>
+
+  <h3 class="mt-24" data-i18n="pseudoLeftRot">Left Rotation</h3>
+  <div class="code-block">
+LEFT-ROTATE(T, x)<br>
+&nbsp;&nbsp;y ← x.right          <span class="cm">// set y</span><br>
+&nbsp;&nbsp;x.right ← y.left<br>
+&nbsp;&nbsp;<span class="st">if</span> y.left ≠ NIL<br>
+&nbsp;&nbsp;&nbsp;&nbsp;y.left.parent ← x<br>
+&nbsp;&nbsp;y.parent ← x.parent<br>
+&nbsp;&nbsp;<span class="st">if</span> x.parent = T.nil<br>
+&nbsp;&nbsp;&nbsp;&nbsp;T.root ← y<br>
+&nbsp;&nbsp;<span class="st">else if</span> x = x.parent.left<br>
+&nbsp;&nbsp;&nbsp;&nbsp;x.parent.left ← y<br>
+&nbsp;&nbsp;<span class="st">else</span> x.parent.right ← y<br>
+&nbsp;&nbsp;y.left ← x<br>
+&nbsp;&nbsp;x.parent ← y
+  </div>
+
+  <h3 class="mt-24" data-i18n="pseudoRightRot">Right Rotation</h3>
+  <div class="code-block">
+RIGHT-ROTATE(T, x)<br>
+&nbsp;&nbsp;y ← x.left           <span class="cm">// set y</span><br>
+&nbsp;&nbsp;x.left ← y.right<br>
+&nbsp;&nbsp;<span class="st">if</span> y.right ≠ NIL<br>
+&nbsp;&nbsp;&nbsp;&nbsp;y.right.parent ← x<br>
+&nbsp;&nbsp;y.parent ← x.parent<br>
+&nbsp;&nbsp;<span class="st">if</span> x.parent = T.nil<br>
+&nbsp;&nbsp;&nbsp;&nbsp;T.root ← y<br>
+&nbsp;&nbsp;<span class="st">else if</span> x = x.parent.right<br>
+&nbsp;&nbsp;&nbsp;&nbsp;x.parent.right ← y<br>
+&nbsp;&nbsp;<span class="st">else</span> x.parent.left ← y<br>
+&nbsp;&nbsp;y.right ← x<br>
+&nbsp;&nbsp;x.parent ← y
+  </div>
+
+  <h3 class="mt-24" data-i18n="pseudoFixup">RB-INSERT-FIXUP (Outline)</h3>
+  <div class="alg-steps">
+    <div class="alg-step"><span><span class="kw">while</span> z.parent.color == RED</span></div>
+    <div class="alg-step"><span><span class="st">if</span> z.parent == z.parent.parent.left</span></div>
+    <div class="alg-step"><span>&nbsp;&nbsp;<span class="st">if</span> uncle.color == RED → <span class="cm">Case A</span>: recolor & continue up</span></div>
+    <div class="alg-step"><span>&nbsp;&nbsp;<span class="st">else if</span> z == z.parent.right → <span class="cm">Case C</span>: rotate left at parent</span></div>
+    <div class="alg-step"><span>&nbsp;&nbsp;<span class="st">else</span> → <span class="cm">Case B</span>: rotate right at grandparent + recolor</span></div>
+    <div class="alg-step"><span><span class="kw">mirror</span> same logic for right branch</span></div>
+    <div class="alg-step"><span>T.root.color = <span class="nu">BLACK</span></span></div>
+  </div>
+</section>
+
+<!-- APPLICATIONS -->
+<section id="applications" class="reveal">
+  <p class="section-label" data-i18n="ch11Label">Chapter 11 · Real-World Usage</p>
+  <h2 data-i18n="appsTitle">Where are Red-Black Trees Used?</h2>
+
+  <div class="app-grid">
+    <div class="app-card">
+      <div class="app-icon">🗺️</div>
+      <h4 data-i18n="app1Title">std::map / std::set (C++)</h4>
+      <p data-i18n="app1Text">The GNU C++ Standard Library implements ordered maps with Red-Black trees.</p>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">☕</div>
+      <h4 data-i18n="app2Title">Java TreeMap / TreeSet</h4>
+      <p data-i18n="app2Text">Java's <code>TreeMap</code> and <code>TreeSet</code> use Red-Black trees internally for guaranteed O(log n) ordered operations.</p>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">🐧</div>
+      <h4 data-i18n="app3Title">Linux Kernel</h4>
+      <p data-i18n="app3Text">The Completely Fair Scheduler (CFS) and virtual memory subsystem use Red-Black trees extensively.</p>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">💾</div>
+      <h4 data-i18n="app4Title">Database Indexes</h4>
+      <p data-i18n="app4Text">MySQL and PostgreSQL use B+ trees for disk-based indexes, but the in-memory components often use Red-Black variants.</p>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">⚡</div>
+      <h4 data-i18n="app5Title">Multithreading / epoll</h4>
+      <p data-i18n="app5Text">Red-Black trees are used to manage timers and epoll red-black trees in the Linux kernel.</p>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">📦</div>
+      <h4 data-i18n="app6Title">Java HashMap / ConcurrentSkipList</h4>
+      <p data-i18n="app6Text">Java 8+ <code>HashMap</code> switches to a balanced tree when a bucket overflows — a Red-Black tree variant.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<div class="reveal" style="text-align:center; margin-bottom:40px;">
+  <h2 style="font-size:2.2rem;" data-i18n="outroTitle">✨ You've covered the full Red-Black Tree ✨</h2>
+  <p style="color:var(--text-secondary); font-size:1.1rem; max-width:500px; margin:16px auto;" data-i18n="outroSub">From 5 properties to insert-fixup, deletion cases, rotations, pseudocode, and real-world applications.</p>
+</div>
+
+</div><!-- /page -->
+
+<footer>
+  <p>Red-Black Tree · Masterclass · Built for students & engineers</p>
+  <p style="font-size:0.78rem; margin-top:6px;">A self-balancing BST · O(log n) for all operations</p>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════
+   TAB SWITCHING
+   ═══════════════════════════════════════════ */
+function switchTab(group, id) {
+  const container = document.getElementById('ins-tabs').parentElement;
+  container.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(group + '-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════
+   TRAVERSALS
+   ═══════════════════════════════════════════ */
+const TRAVERSAL_DATA = {
+  ll:     [10, 20, 30, 40, 50, 60, 70, 80],
+  pre:    [50, 30, 20, 40, 60, 55, 70, 80],
+  post:   [20, 40, 30, 55, 80, 70, 60, 50],
+  bfs:    [50, 30, 60, 20, 40, 55, 70, 80]
+};
+
+function showTraversal(key) {
+  document.querySelectorAll('.t-tag').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  const data = TRAVERSAL_DATA[key];
+  const out = data.map(n => `<span style="color:var(--accent)">${n}</span>`).join(' <span style="color:var(--text-muted)">→</span> ');
+  document.getElementById('traversal-output').innerHTML = out + ' <span style="color:var(--text-muted)">· done</span>';
+}
+
+/* ═══════════════════════════════════════════
+   TREE DATA STRUCTURE
+   ═══════════════════════════════════════════ */
+const NODES = [
+  { key: 50, color: 'black' },
+  { key: 30, color: 'red'   },
+  { key: 60, color: 'red'   },
+  { key: 20, color: 'black' },
+  { key: 40, color: 'black' },
+  { key: 55, color: 'black' },
+  { key: 70, color: 'black' },
+  { key: 80, color: 'red'   },
+];
+
+let treeRoot = { key: 50, color: 'black', left: null, right: null };
+
+function buildTree(arr) {
+  const nodes = {};
+  arr.forEach(n => nodes[n.key] = { key: n.key, color: n.color, left: null, right: null });
+  const root = nodes[50];
+  [
+    [50,30,'left'], [50,60,'right'],
+    [30,20,'left'], [30,40,'right'],
+    [60,55,'left'], [60,70,'right'],
+    [70,80,'right']
+  ].forEach(([p,k,d]) => {
+    nodes[p][d] = nodes[k];
+  });
+  return root;
+}
+
+/* ═══════════════════════════════════════════
+   TREE SVG RENDERING
+   ═══════════════════════════════════════════ */
+const svg = document.getElementById('tree-svg');
+const nodeElements = {};
+const edgeElements = [];
+let highlightMode = false;
+let highlightedNode = null;
+
+function clearSvg() {
+  while (svg.children.length > 1) svg.removeChild(svg.lastChild);
+}
+
+function getTreeLayer(root) {
+  if (!root) return [];
+  const layers = {};
+  const queue = [{ node: root, x: 400, y: 40, spread: 160 }];
+  const out = [];
+  while (queue.length) {
+    const { node, x, y, spread } = queue.shift();
+    out.push({ node, x, y });
+    if (node.left)  queue.push({ node: node.left,  x: x - spread, y: y + 60, spread: spread / 2.2 });
+    if (node.right) queue.push({ node: node.right, x: x + spread, y: y + 60, spread: spread / 2.2 });
+  }
+  return out;
+}
+
+function drawTree() {
+  clearSvg();
+  const layers = getTreeLayer(treeRoot);
+  layers.forEach(nd => {
+    // Edge from parent
+    if (nd.node.left) {
+      const child = layers.find(l => l.node === nd.node.left);
+      if (child) drawEdge(nd, child);
+    }
+    if (nd.node.right) {
+      const child = layers.find(l => l.node === nd.node.right);
+      if (child) drawEdge(nd, child);
+    }
+  });
+  layers.forEach(nd => drawNode(nd.node, nd.x, nd.y));
+}
+
+function drawEdge(from, to) {
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  path.setAttribute('x1', from.x);
+  path.setAttribute('y1', from.y + 14);
+  path.setAttribute('x2', to.x);
+  path.setAttribute('y2', to.y - 14);
+  path.setAttribute('stroke', highlightMode ? '#7b5eff' : '#5a5a8a');
+  path.setAttribute('stroke-width', highlightMode ? '2.5' : '1.8');
+  if (highlightMode) path.setAttribute('stroke-dasharray', '6 3');
+  svg.appendChild(path);
+}
+
+function drawNode(node, x, y) {
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g.setAttribute('class', 'tree-node');
+  g.setAttribute('transform', `translate(${x}, ${y})`);
+
+  const isRed = node.color === 'red';
+  const isHighlighted = highlightedNode && highlightedNode.key === node.key;
+
+  const glow = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  glow.setAttribute('r', isRed ? '22' : '18');
+  glow.setAttribute('fill', isRed ? '#ff335540' : 'rgba(255,255,255,0.03)');
+  glow.setAttribute('class', isRed ? 'node-glow' : '');
+  glow.setAttribute('cx', '0');
+  glow.setAttribute('cy', '0');
+  g.appendChild(glow);
+
+  const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  circle.setAttribute('r', '18');
+  circle.setAttribute('class', isRed ? 'node-circle-red' : 'node-circle-black');
+  if (isHighlighted) {
+    circle.setAttribute('stroke', '#fff');
+    circle.setAttribute('stroke-width', '3');
+    circle.setAttribute('filter', 'url(#glow)');
+  }
+  g.appendChild(circle);
+
+  const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  text.setAttribute('class', 'node-text');
+  text.setAttribute('x', '0');
+  text.setAttribute('y', '0');
+  text.textContent = node.key;
+  g.appendChild(text);
+
+  // Color indicator dot
+  const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  dot.setAttribute('cx', '8');
+  dot.setAttribute('cy', '-10');
+  dot.setAttribute('r', '4');
+  dot.setAttribute('fill', isRed ? '#ff5577' : '#8888bb');
+  g.appendChild(dot);
+
+  g.addEventListener('click', () => {
+    highlightedNode = highlightedNode === node ? null : node;
+    drawTree();
+  });
+  g.addEventListener('mouseenter', () => {
+    glow.setAttribute('opacity', '1');
+  });
+  g.addEventListener('mouseleave', () => {
+    glow.setAttribute('opacity', '0.7');
+  });
+
+  svg.appendChild(g);
+}
+
+function resetTree() {
+  treeRoot = buildTree(NODES);
+  highlightedNode = null;
+  highlightMode = false;
+  drawTree();
+}
+
+function toggleHighlight() {
+  highlightMode = !highlightMode;
+  drawTree();
+}
+
+/* ═══════════════════════════════════════════
+   INTERACTIVE INSERT
+   ═══════════════════════════════════════════ */
+function insertNode() {
+  const key = Math.floor(Math.random() * 100) + 1;
+  // Simple BST insert (no fixup animation to keep code concise)
+  let cur = treeRoot, parent = null;
+  while (cur) {
+    parent = cur;
+    cur = key < cur.key ? cur.left : cur.right;
+  }
+  const isRed = parent && Math.random() > 0.5;
+  const newNode = { key, color: isRed ? 'red' : 'black', left: null, right: null };
+  if (key < parent.key) parent.left = newNode; else parent.right = newNode;
+  highlightedNode = newNode;
+  drawTree();
+}
+
+/* ═══════════════════════════════════════════
+   STEP DEMO (Animated)
+   ═══════════════════════════════════════════ */
+let demoStep = 0;
+const demoSteps = [
+  { key: 10, color: 'red'   },
+  { key: 20, color: 'red'   },
+  { key: 15, color: 'black' },
+  { key: 25, color: 'red'   },
+  { key: 5,  color: 'red'   },
+  null, // end
+];
+let demoRoot = null;
+let demoIndex = 0;
+
+function animateStep() {
+  if (demoIndex >= 4) { resetTree(); demoIndex = 0; treeRoot = buildTree(NODES); demoRoot = treeRoot; }
+  const step = demoSteps[demoIndex];
+  if (!step) return;
+
+  if (!demoRoot) {
+    demoRoot = { key: step.key, color: 'black', left: null, right: null };
+    treeRoot = demoRoot;
+  } else {
+    let cur = demoRoot;
+    const newNode = { key: step.key, color: step.color, left: null, right: null };
+    while (true) {
+      if (step.key < cur.key) {
+        if (!cur.left) { cur.left = newNode; break; }
+        cur = cur.left;
+      } else {
+        if (!cur.right) { cur.right = newNode; break; }
+        cur = cur.right;
+      }
+    }
+    treeRoot = demoRoot;
+    highlightedNode = newNode;
+  }
+
+  drawTree();
+  demoIndex++;
+}
+
+/* ═══════════════════════════════════════════
+   BACKGROUND PARTICLES
+   ═══════════════════════════════════════════ */
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const particles = Array.from({ length: 80 }, () => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: (Math.random() - 0.5) * 0.3,
+    r: Math.random() * 1.5 + 0.5,
+    a: Math.random() * 0.4 + 0.1,
+  }));
+
+  function frame() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(123, 94, 255, ${p.a})`;
+      ctx.fill();
+    });
+    // connection lines
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d = dx*dx + dy*dy;
+        if (d < 12000) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(123, 94, 255, ${0.06 * (1 - d / 12000)})`;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ═══════════════════════════════════════════
+   SCROLL REVEAL
+   ═══════════════════════════════════════════ */
+(function() {
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
+})();
+
+/* ═══════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════ */
+treeRoot = buildTree(NODES);
+drawTree();
+</script>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a114d70c6d8d6d94',t:'MTc4MjM5OTYwNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

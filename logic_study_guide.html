@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicate Logic & First-Order Logic - دليل الدراسة</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-tertiary: #3d3d3d;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --accent-blue: #4a9eff;
+            --accent-purple: #9b59b6;
+            --accent-green: #2ecc71;
+            --accent-red: #e74c3c;
+            --accent-yellow: #f39c12;
+            --border-color: #444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            font-size: 1.2em;
+            color: var(--text-secondary);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--accent-blue);
+            color: white;
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .exercise-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .exercise-number {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .exercise-title {
+            font-size: 1.3em;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .exercise-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .exercise-content h3 {
+            color: var(--accent-blue);
+            margin: 15px 0 10px 0;
+        }
+
+        .predicate {
+            background: var(--bg-tertiary);
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            display: inline-block;
+            margin: 5px;
+            border-left: 3px solid var(--accent-blue);
+            color: var(--text-primary);
+        }
+
+        .formula {
+            background: var(--bg-tertiary);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            border-left: 4px solid var(--accent-yellow);
+            color: var(--text-primary);
+        }
+
+        .solution-box {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--accent-green);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .solution-box.hidden {
+            display: none;
+        }
+
+        .solution-title {
+            color: var(--accent-green);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .toggle-btn {
+            background: linear-gradient(135deg, var(--accent-green), #27ae60);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .toggle-btn.showing {
+            background: linear-gradient(135deg, var(--accent-red), #c0392b);
+        }
+
+        .arabic-text {
+            direction: rtl;
+            text-align: right;
+            color: var(--text-secondary);
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border-radius: 5px;
+            margin: 10px 0;
+            border-right: 3px solid var(--accent-purple);
+            font-size: 1.1em;
+        }
+
+        .key-point {
+            background: rgba(74, 158, 255, 0.1);
+            border-left: 4px solid var(--accent-blue);
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning {
+            background: rgba(243, 156, 18, 0.1);
+            border-left: 4px solid var(--accent-yellow);
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .success {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--accent-green);
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .error {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--accent-red);
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-tertiary);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+        }
+
+        tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        .progress-bar {
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            height: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            color: var(--text-primary);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        footer p {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        ul, ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin: 5px 0;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .exercise-card {
+                padding: 15px;
+            }
+
+            .nav-buttons {
+                gap: 5px;
+            }
+
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Predicate Logic & First-Order Logic</h1>
+            <h2 style="color: var(--accent-purple); margin-bottom: 10px;">المنطق المسند والمنطق ذو الدرجة الأولى</h2>
+            <p>Interactive Study Guide - دليل الدراسة التفاعلي | 15 Exercises with Solutions</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="completedCount">0</div>
+                    <div>Completed | مكتمل</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15</div>
+                    <div>Total | المجموع</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="nav-buttons">
+            <button class="nav-btn active" onclick="filterExercises('all')">All Exercises | جميع التمارين</button>
+            <button class="nav-btn" onclick="filterExercises('classification')">Classification | التصنيف</button>
+            <button class="nav-btn" onclick="filterExercises('fol')">FOL Conversion | التحويل</button>
+            <button class="nav-btn" onclick="filterExercises('quantifiers')">Quantifiers | المكممات</button>
+            <button class="nav-btn" onclick="filterExercises('inference')">Inference | الاستنتاج</button>
+            <button class="nav-btn" onclick="filterExercises('unification')">Unification | التوحيد</button>
+        </div>
+
+        <div id="exercisesContainer">
+            <!-- Exercise 1 -->
+            <div class="exercise-card" data-category="classification">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 1 | التمرين 1</span>
+                    <span class="exercise-title">Predicate Classification by Arity | تصنيف المسندات حسب الرتبة</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>Classify each predicate as Unary, Binary, or Ternary, then write its reading in Arabic:</p>
+                    <p class="arabic-text">صنف كل مسند إلى أحادي أو ثنائي أو ثلاثي، ثم اكتب قراءته بالعربية:</p>
+                    <div style="margin: 15px 0;">
+                        <span class="predicate">Student(Mona)</span>
+                        <span class="predicate">Teaches(Nader, Logic)</span>
+                        <span class="predicate">Gives(Ali, Book, Sara)</span>
+                        <span class="predicate">Between(C, A, B)</span>
+                    </div>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <div class="table-container">
+                            <table>
+                                <tr>
+                                    <th>Predicate | المسند</th>
+                                    <th>Type | النوع</th>
+                                    <th>Reason | السبب</th>
+                                    <th>Arabic Reading | القراءة العربية</th>
+                                </tr>
+                                <tr>
+                                    <td><span class="predicate">Student(Mona)</span></td>
+                                    <td><strong>Unary | أحادي</strong></td>
+                                    <td>Takes one argument | يأخذ وسيطاً واحداً</td>
+                                    <td class="arabic-text">منى طالبة</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="predicate">Teaches(Nader, Logic)</span></td>
+                                    <td><strong>Binary | ثنائي</strong></td>
+                                    <td>Connects Nader and Logic | يربط بين نادر والمنطق</td>
+                                    <td class="arabic-text">نادر يدرس المنطق</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="predicate">Gives(Ali, Book, Sara)</span></td>
+                                    <td><strong>Ternary | ثلاثي</strong></td>
+                                    <td>Giver, given thing, receiver | المعطي والشيء المعطى والمستلم</td>
+                                    <td class="arabic-text">علي يعطي كتاباً لسارة</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="predicate">Between(C, A, B)</span></td>
+                                    <td><strong>Ternary | ثلاثي</strong></td>
+                                    <td>Relationship needs three elements | العلاقة تحتاج ثلاثة عناصر</td>
+                                    <td class="arabic-text">C يقع بين A و B</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 2 -->
+            <div class="exercise-card" data-category="fol">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 2 | التمرين 2</span>
+                    <span class="exercise-title">Complex General Rule Formulation | صياغة قاعدة عامة مركبة</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>Convert the following sentence to First-Order Logic:</p>
+                    <p class="arabic-text">حوّل الجملة التالية إلى منطق الدرجة الأولى:</p>
+                    <div class="key-point">"Every student registered in university studies at least one course."</div>
+                    <div class="arabic-text">"كل طالب مسجل في الجامعة يدرس مقرراً واحداً على الأقل."</div>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <h3>Step 1: Define Predicates | الخطوة 1: تعريف المسندات</h3>
+                        <ul>
+                            <li><span class="predicate">Student(x)</span> : x is a student | x طالب</li>
+                            <li><span class="predicate">Registered(x, University)</span> : x is registered in university | x مسجل في الجامعة</li>
+                            <li><span class="predicate">Course(y)</span> : y is a course | y مقرر</li>
+                            <li><span class="predicate">Studies(x, y)</span> : x studies y | x يدرس y</li>
+                        </ul>
+                        <h3>Step 2: Formula | الخطوة 2: الصيغة</h3>
+                        <div class="formula">∀x((Student(x) ∧ Registered(x, University)) → ∃y(Course(y) ∧ Studies(x, y)))</div>
+                        <h3>Step 3: Explanation | الخطوة 3: الشرح</h3>
+                        <p><strong>For all x</strong>, if x is a student AND registered in university, <strong>then there exists y</strong> such that y is a course AND x studies y.</p>
+                        <p class="arabic-text"><strong>لكل x</strong>، إذا كان x طالباً ومسجلاً في الجامعة، <strong>فإنه يوجد y</strong> بحيث y مقرر و x يدرسه.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 3 -->
+            <div class="exercise-card" data-category="fol">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 3 | التمرين 3</span>
+                    <span class="exercise-title">Sentence with Negation and Existence | جملة تحتوي نفياً ووجوداً</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>Convert the following sentence to First-Order Logic:</p>
+                    <p class="arabic-text">حوّل الجملة التالية إلى منطق الدرجة الأولى:</p>
+                    <div class="key-point">"There exists a student who does not like mathematics but likes programming."</div>
+                    <div class="arabic-text">"يوجد طالب لا يحب الرياضيات لكنه يحب البرمجة."</div>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <h3>Step 1: Define Predicates | الخطوة 1: تعريف المسندات</h3>
+                        <ul>
+                            <li><span class="predicate">Student(x)</span> : x is a student | x طالب</li>
+                            <li><span class="predicate">Likes(x, Math)</span> : x likes mathematics | x يحب الرياضيات</li>
+                            <li><span class="predicate">Likes(x, Programming)</span> : x likes programming | x يحب البرمجة</li>
+                        </ul>
+                        <h3>Step 2: Formula | الخطوة 2: الصيغة</h3>
+                        <div class="formula">∃x(Student(x) ∧ ¬Likes(x, Math) ∧ Likes(x, Programming))</div>
+                        <h3>Step 3: Explanation | الخطوة 3: الشرح</h3>
+                        <div class="key-point">This is an <strong>existential</strong> statement because it asserts the existence of at least one student who satisfies three properties:</div>
+                        <div class="arabic-text">هذه جملة <strong>وجودية</strong> لأنها تثبت وجود طالب واحد على الأقل يحقق ثلاث خصائص:</div>
+                        <ol>
+                            <li>Is a student | طالب</li>
+                            <li>Does NOT like mathematics (¬Likes) | لا يحب الرياضيات</li>
+                            <li>Likes programming | يحب البرمجة</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 4 -->
+            <div class="exercise-card" data-category="quantifiers">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 4 | التمرين 4</span>
+                    <span class="exercise-title">Quantifier Order Analysis | تحليل أثر ترتيب المكممات</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>Explain the logical difference between these two formulas:</p>
+                    <p class="arabic-text">اشرح الفرق المنطقي بين الصيغتين التاليتين:</p>
+                    <div class="formula">∀x ∃y Advises(y, x)</div>
+                    <div class="formula">∃y ∀x Advises(y, x)</div>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <h3>First Formula: ∀x ∃y Advises(y, x) | الصيغة الأولى</h3>
+                        <div class="key-point">Meaning: <strong>For every person x, there exists some person y who advises x.</strong></div>
+                        <div class="arabic-text">المعنى: <strong>لكل شخص x، يوجد شخص ما y ينصح x.</strong></div>
+                        <p>The advisor can be different for each person. Each person has their own advisor.</p>
+                        <p class="arabic-text">قد يختلف الناصح من شخص لآخر. لكل شخص ناصحه الخاص.</p>
+                        <h3>Second Formula: ∃y ∀x Advises(y, x) | الصيغة الثانية</h3>
+                        <div class="warning">Meaning: <strong>There exists one specific person y who advises ALL people.</strong></div>
+                        <div class="arabic-text">المعنى: <strong>يوجد شخص واحد بعينه y ينصح جميع الأشخاص.</strong></div>
+                        <p>This means there is a single universal advisor for everyone.</p>
+                        <p class="arabic-text">هذا يعني أن هناك ناصحاً عالمياً واحداً للجميع.</p>
+                        <h3>Conclusion | الخلاصة:</h3>
+                        <div class="error">The two formulas are NOT equivalent because changing the order of ∀ and ∃ changes the meaning!</div>
+                        <div class="arabic-text">الصيغتان غير متكافئتين؛ لأن تبديل ترتيب ∀ و ∃ يغير المعنى!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 5 -->
+            <div class="exercise-card" data-category="fol">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 5 | التمرين 5</span>
+                    <span class="exercise-title">Correcting Quantifier Usage Error | تصحيح خطأ في استخدام المكممات</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>The following formula was proposed to represent: "Every doctor works in a hospital."</p>
+                    <p class="arabic-text">الصيغة التالية قُدمت لتمثيل: "كل طبيب يعمل في مستشفى."</p>
+                    <div class="error">∀x Doctor(x) ∧ WorksIn(x, Hospital)</div>
+                    <p>But it's incorrect. Correct it and explain why.</p>
+                    <p class="arabic-text">لكنها غير دقيقة. صححها وبيّن السبب.</p>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <h3>The Error | الخطأ:</h3>
+                        <div class="error">The incorrect formula means: "Everything in the domain is a doctor AND works in a hospital" - which is not intended!</div>
+                        <div class="arabic-text">الصيغة الخاطئة تعني أن "كل شيء في مجال الخطاب هو طبيب ويعمل في مستشفى" - وهذا غير مقصود!</div>
+                        <h3>Corrected Formulas | الصيغ المصححة:</h3>
+                        <p><strong>If referring to a specific hospital named "Hospital":</strong></p>
+                        <p class="arabic-text"><strong>إذا كان المقصود مستشفى محدداً اسمه Hospital:</strong></p>
+                        <div class="formula">∀x(Doctor(x) → WorksIn(x, Hospital))</div>
+                        <p><strong>If meaning every doctor works in some hospital (more academically precise):</strong></p>
+                        <p class="arabic-text"><strong>إذا كان المقصود أن كل طبيب يعمل في مستشفى ما (أكثر دقة أكاديمياً):</strong></p>
+                        <div class="formula">∀x(Doctor(x) → ∃y(Hospital(y) ∧ WorksIn(x, y)))</div>
+                        <h3>Key Point | النقطة الأساسية:</h3>
+                        <div class="success">The second version is more accurate because it doesn't assume all doctors work in the same specific hospital.</div>
+                        <div class="arabic-text">الصيغة الثانية أكثر دقة لأنها لا تفترض أن جميع الأطباء يعملون في مستشفى محد واحد.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 6 -->
+            <div class="exercise-card" data-category="inference">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 6 | التمرين 6</span>
+                    <span class="exercise-title">Direct Inference with Two Rules | استنتاج مباشر بقاعدتين</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>Given the following knowledge base, derive the conclusion:</p>
+                    <p class="arabic-text">لدينا قاعدة المعرفة التالية. استنتج النتيجة:</p>
+                    <div class="formula">∀x (Researcher(x) → WritesPaper(x))</div>
+                    <div class="formula">Researcher(Nora)</div>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <h3>Step 1: Apply Universal Instantiation | الخطوة 1: تطبيق الاستبدال الكلي</h3>
+                        <p>Substitute Nora for x:</p>
+                        <p class="arabic-text">نطبق الاستبدال الكلي على Nora:</p>
+                        <div class="formula">Researcher(Nora) → WritesPaper(Nora)</div>
+                        <h3>Step 2: Use the Given Fact | الخطوة 2: استخدام الحقيقة المعطاة</h3>
+                        <div class="formula">Researcher(Nora)</div>
+                        <h3>Step 3: Apply Modus Ponens | الخطوة 3: تطبيق Modus Ponens</h3>
+                        <div class="key-point">Modus Ponens Rule: P → Q, P ∴ Q</div>
+                        <p>Since we have Researcher(Nora) and Researcher(Nora) → WritesPaper(Nora), we conclude:</p>
+                        <p class="arabic-text">بما أن لدينا Researcher(Nora) و Researcher(Nora) → WritesPaper(Nora)، نستنتج:</p>
+                        <div class="success">WritesPaper(Nora)</div>
+                        <h3>Final Answer | الإجابة النهائية:</h3>
+                        <p class="arabic-text">نورا تكتب بحثاً</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 7 -->
+            <div class="exercise-card" data-category="unification">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 7 | التمرين 7</span>
+                    <span class="exercise-title">Unification with Two Binary Predicates | توحيد بصيغتين ثنائيتين</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>Find the appropriate substitution to unify these two expressions:</p>
+                    <p class="arabic-text">أوجد التعويض المناسب لتوحيد العبارتين التاليتين:</p>
+                    <div class="formula">Supervises(x, ProjectA)</div>
+                    <div class="formula">Supervises(DrHadi, y)</div>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <h3>Step 1: Find Substitutions | الخطوة 1: إيجاد التعويضات</h3>
+                        <p>From the first argument: <strong>x = DrHadi</strong></p>
+                        <p class="arabic-text">من الوسيط الأول: <strong>x = DrHadi</strong></p>
+                        <p>From the second argument: <strong>y = ProjectA</strong></p>
+                        <p class="arabic-text">من الوسيط الثاني: <strong>y = ProjectA</strong></p>
+                        <h3>Step 2: Unification Substitution | الخطوة 2: تعويض التوحيد</h3>
+                        <div class="formula">{x/DrHadi, y/ProjectA}</div>
+                        <h3>Step 3: Verify | الخطوة 3: التحقق</h3>
+                        <p>After substitution, both expressions become:</p>
+                        <p class="arabic-text">بعد التعويض، تصبح العبارتان:</p>
+                        <div class="success">Supervises(DrHadi, ProjectA)</div>
+                        <div class="key-point">✓ Unification successful! | نجح التوحيد!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 8 -->
+            <div class="exercise-card" data-category="unification">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 8 | التمرين 8</span>
+                    <span class="exercise-title">Unification Failure Case | حالة فشل في التوحيد</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>Can these two expressions be unified? Explain:</p>
+                    <p class="arabic-text">هل يمكن توحيد العبارتين التاليتين؟ علل:</p>
+                    <div class="formula">Parent(x, x)</div>
+                    <div class="formula">Parent(Ali, Sara)</div>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <h3>Answer: NO - Unification Fails | الإجابة: لا - فشل التوحيد</h3>
+                        <h3>Reason | السبب:</h3>
+                        <p>The first expression requires that variable <strong>x</strong> takes the SAME value in both positions.</p>
+                        <p class="arabic-text">الصيغة الأولى تتطلب أن يأخذ المتغير <strong>x</strong> القيمة نفسها في الموضعين.</p>
+                        <p>But in the second expression:</p>
+                        <p class="arabic-text">لكن في الصيغة الثانية:</p>
+                        <ul>
+                            <li>From first argument: <strong>x = Ali</strong> | من الوسيط الأول: <strong>x = Ali</strong></li>
+                            <li>From second argument: <strong>x = Sara</strong> | من الوسيط الثاني: <strong>x = Sara</strong></li>
+                        </ul>
+                        <h3>Problem | المشكلة:</h3>
+                        <div class="error">Ali ≠ Sara</div>
+                        <p>There is no single substitution that makes both expressions identical.</p>
+                        <p class="arabic-text">لا يوجد تعويض واحد يجعل العبارتين متطابقتين.</p>
+                        <div class="error">Unification FAILED | فشل التوحيد</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 9 -->
+            <div class="exercise-card" data-category="inference">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 9 | التمرين 9</span>
+                    <span class="exercise-title">Forward Chaining - Extract All Results | استخرج جميع النتائج الممكنة</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>Apply forward chaining to extract all new conclusions:</p>
+                    <p class="arabic-text">طبق الاستنتاج الأمامي على قاعدة المعرفة التالية واستخرج النتائج الجديدة:</p>
+                    <div class="formula">Student(Huda)</div>
+                    <div class="formula">∀x (Student(x) → HasID(x))</div>
+                    <div class="formula">∀x (HasID(x) → CanBorrowBooks(x))</div>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <h3>Step 1: Start with Fact | الخطوة 1: ابدأ من الحقيقة</h3>
+                        <div class="formula">Student(Huda)</div>
+                        <h3>Step 2: Apply First Rule | الخطوة 2: تطبيق القاعدة الأولى</h3>
+                        <div class="formula">∀x (Student(x) → HasID(x))</div>
+                        <p>Using Modus Ponens with Huda:</p>
+                        <p class="arabic-text">باستخدام Modus Ponens مع Huda:</p>
+                        <div class="success">HasID(Huda)</div>
+                        <h3>Step 3: Apply Second Rule | الخطوة 3: تطبيق القاعدة الثانية</h3>
+                        <div class="formula">∀x (HasID(x) → CanBorrowBooks(x))</div>
+                        <p>Using Modus Ponens with Huda:</p>
+                        <p class="arabic-text">باستخدام Modus Ponens مع Huda:</p>
+                        <div class="success">CanBorrowBooks(Huda)</div>
+                        <h3>New Conclusions | النتائج الجديدة:</h3>
+                        <ol>
+                            <li><span class="predicate">HasID(Huda)</span></li>
+                            <li><span class="predicate">CanBorrowBooks(Huda)</span></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 10 -->
+            <div class="exercise-card" data-category="inference">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 10 | التمرين 10</span>
+                    <span class="exercise-title">Forward Chaining with Multiple Premises | استنتاج أمامي مع أكثر من مسار</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>Extract all possible conclusions:</p>
+                    <p class="arabic-text">استخرج جميع النتائج الممكنة:</p>
+                    <div class="formula">Researcher(Nabil)</div>
+                    <div class="formula">Publishes(Nabil)</div>
+                    <div class="formula">∀x (Researcher(x) → Academic(x))</div>
+                    <div class="formula">∀x (Publishes(x) → Active(x))</div>
+                    <div class="formula">∀x (Academic(x) ∧ Active(x) → EligibleForGrant(x))</div>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <h3>Step 1: From Researcher(Nabil) | الخطوة 1: من Researcher(Nabil)</h3>
+                        <p>Apply: ∀x (Researcher(x) → Academic(x))</p>
+                        <p class="arabic-text">طبق: ∀x (Researcher(x) → Academic(x))</p>
+                        <div class="success">Academic(Nabil)</div>
+                        <h3>Step 2: From Publishes(Nabil) | الخطوة 2: من Publishes(Nabil)</h3>
+                        <p>Apply: ∀x (Publishes(x) → Active(x))</p>
+                        <p class="arabic-text">طبق: ∀x (Publishes(x) → Active(x))</p>
+                        <div class="success">Active(Nabil)</div>
+                        <h3>Step 3: Combine Results | الخطوة 3: دمج النتائج</h3>
+                        <p>We have: Academic(Nabil) ∧ Active(Nabil)</p>
+                        <p class="arabic-text">لدينا: Academic(Nabil) ∧ Active(Nabil)</p>
+                        <h3>Step 4: Apply Final Rule | الخطوة 4: تطبيق القاعدة النهائية</h3>
+                        <p>Apply: ∀x (Academic(x) ∧ Active(x) → EligibleForGrant(x))</p>
+                        <p class="arabic-text">طبق: ∀x (Academic(x) ∧ Active(x) → EligibleForGrant(x))</p>
+                        <div class="success">EligibleForGrant(Nabil)</div>
+                        <h3>All Possible Conclusions | جميع النتائج الممكنة:</h3>
+                        <ol>
+                            <li><span class="predicate">Academic(Nabil)</span></li>
+                            <li><span class="predicate">Active(Nabil)</span></li>
+                            <li><span class="predicate">EligibleForGrant(Nabil)</span></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 11 -->
+            <div class="exercise-card" data-category="inference">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 11 | التمرين 11</span>
+                    <span class="exercise-title">Backward Chaining - Prove Specific Goal | إثبات هدف محدد</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>Use backward chaining to prove the goal:</p>
+                    <p class="arabic-text">استخدم الاستنتاج الخلفي لإثبات الهدف:</p>
+                    <div class="key-point">Goal: CanGraduate(Samir) | الهدف: CanGraduate(Samir)</div>
+                    <div class="formula">∀x (CompletedCourses(x) → CanGraduate(x))</div>
+                    <div class="formula">∀x (PassedAllExams(x) → CompletedCourses(x))</div>
+                    <div class="formula">PassedAllExams(Samir)</div>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <h3>Step 1: Start from Goal | الخطوة 1: ابدأ من الهدف</h3>
+                        <div class="formula">CanGraduate(Samir)</div>
+                        <h3>Step 2: Find Rule with This Conclusion | الخطوة 2: إيجاد قاعدة بهذه النتيجة</h3>
+                        <p>Rule: ∀x (CompletedCourses(x) → CanGraduate(x))</p>
+                        <p class="arabic-text">القاعدة: ∀x (CompletedCourses(x) → CanGraduate(x))</p>
+                        <p>To prove: CanGraduate(Samir), we need to prove:</p>
+                        <p class="arabic-text">لإثبات: CanGraduate(Samir)، نحتاج إلى إثبات:</p>
+                        <div class="formula">CompletedCourses(Samir)</div>
+                        <h3>Step 3: Find Rule to Prove Sub-goal | الخطوة 3: إيجاد قاعدة لإثبات الهدف الفرعي</h3>
+                        <p>Rule: ∀x (PassedAllExams(x) → CompletedCourses(x))</p>
+                        <p class="arabic-text">القاعدة: ∀x (PassedAllExams(x) → CompletedCourses(x))</p>
+                        <p>To prove: CompletedCourses(Samir), we need to prove:</p>
+                        <p class="arabic-text">لإثبات: CompletedCourses(Samir)، نحتاج إلى إثبات:</p>
+                        <div class="formula">PassedAllExams(Samir)</div>
+                        <h3>Step 4: Check Knowledge Base | الخطوة 4: التحقق من قاعدة المعرفة</h3>
+                        <div class="success">PassedAllExams(Samir) ✓ (This is a fact!)</div>
+                        <div class="arabic-text">PassedAllExams(Samir) ✓ (هذه حقيقة موجودة!)</div>
+                        <h3>Conclusion | الخلاصة:</h3>
+                        <div class="success">CanGraduate(Samir) is PROVED! | تم إثبات CanGraduate(Samir)!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 12 -->
+            <div class="exercise-card" data-category="inference">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 12 | التمرين 12</span>
+                    <span class="exercise-title">Proof Failure Due to Missing Fact | فشل إثبات هدف بسبب نقص حقيقة</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>Can the following goal be proved? Explain:</p>
+                    <p class="arabic-text">هل يمكن إثبات الهدف التالي؟ علل:</p>
+                    <div class="key-point">Goal: ReceivesCertificate(Maya) | الهدف: ReceivesCertificate(Maya)</div>
+                    <div class="formula">∀x (AttendedWorkshop(x) ∧ PassedTest(x) → ReceivesCertificate(x))</div>
+                    <div class="formula">AttendedWorkshop(Maya)</div>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <h3>Step 1: To Prove ReceivesCertificate(Maya) | الخطوة 1: لإثبات ReceivesCertificate(Maya)</h3>
+                        <p>We need BOTH conditions to be true:</p>
+                        <p class="arabic-text">نحتاج إلى تحقق الشرطين:</p>
+                        <ol>
+                            <li>AttendedWorkshop(Maya)</li>
+                            <li>PassedTest(Maya)</li>
+                        </ol>
+                        <h3>Step 2: Check Knowledge Base | الخطوة 2: التحقق من قاعدة المعرفة</h3>
+                        <p>✓ First condition EXISTS:</p>
+                        <p class="arabic-text">✓ المعطى الأول موجود:</p>
+                        <div class="success">AttendedWorkshop(Maya)</div>
+                        <p>✗ Second condition MISSING:</p>
+                        <p class="arabic-text">✗ المعطى الثاني غير موجود:</p>
+                        <div class="error">PassedTest(Maya) - NOT in knowledge base!</div>
+                        <div class="arabic-text">PassedTest(Maya) - غير موجود في قاعدة المعرفة!</div>
+                        <h3>Conclusion | الخلاصة:</h3>
+                        <div class="error">Cannot prove ReceivesCertificate(Maya)</div>
+                        <div class="arabic-text">لا يمكن إثبات ReceivesCertificate(Maya)</div>
+                        <div class="warning">The knowledge base is incomplete - missing the fact that Maya passed the test.</div>
+                        <div class="arabic-text">قاعدة المعرفة ناقصة - نقص حقيقة أن Maya اجتازت الاختبار.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 13 -->
+            <div class="exercise-card" data-category="inference">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 13 | التمرين 13</span>
+                    <span class="exercise-title">Applying Modus Tollens | تطبيق Modus Tollens</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>Use Modus Tollens to extract the conclusion:</p>
+                    <p class="arabic-text">استخدم Modus Tollens لاستخراج النتيجة:</p>
+                    <div class="formula">∀x (Verified(x) → Accepted(x))</div>
+                    <div class="formula">¬Accepted(File7)</div>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <h3>Step 1: Apply Universal Instantiation | الخطوة 1: تطبيق الاستبدال الكلي</h3>
+                        <p>Apply the rule to File7:</p>
+                        <p class="arabic-text">طبق القاعدة على File7:</p>
+                        <div class="formula">Verified(File7) → Accepted(File7)</div>
+                        <h3>Step 2: Use Given Fact | الخطوة 2: استخدام الحقيقة المعطاة</h3>
+                        <div class="formula">¬Accepted(File7)</div>
+                        <h3>Step 3: Apply Modus Tollens | الخطوة 3: تطبيق Modus Tollens</h3>
+                        <div class="key-point">Modus Tollens Rule: P → Q, ¬Q ∴ ¬P</div>
+                        <p>Since we have ¬Accepted(File7), we conclude:</p>
+                        <p class="arabic-text">بما أن لدينا ¬Accepted(File7)، نستنتج:</p>
+                        <div class="success">¬Verified(File7)</div>
+                        <h3>Final Answer | الإجابة النهائية:</h3>
+                        <p class="arabic-text">الملف غير موثق</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 14 -->
+            <div class="exercise-card" data-category="fol">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 14 | التمرين 14</span>
+                    <span class="exercise-title">Limitations of First-Order Logic | حدود الاستنتاج المنطقي</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>Why is it difficult to accurately represent the following sentence in traditional First-Order Logic?</p>
+                    <p class="arabic-text">لماذا يصعب تمثيل الجملة التالية بدقة في منطق الدرجة الأولى التقليدي؟</p>
+                    <div class="key-point">"Usually, diligent students succeed."</div>
+                    <div class="arabic-text">"غالباً الطلاب المجتهدون ينجحون."</div>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <h3>The Problem | المشكلة:</h3>
+                        <div class="warning">The word "usually" expresses <strong>probabilistic knowledge</strong>, not a definitive judgment!</div>
+                        <div class="arabic-text">كلمة "غالباً" تعبر عن <strong>معرفة احتمالية</strong>، وليست حكماً قطعياً!</div>
+                        <h3>Why FOL Struggles | لماذا يعاني FOL:</h3>
+                        <p>Traditional First-Order Logic typically treats propositions as:</p>
+                        <p class="arabic-text">منطق الدرجة الأولى التقليدي يتعامل عادة مع القضايا على أنها:</p>
+                        <ul>
+                            <li>Either TRUE or FALSE (binary) | كاذبة أو صادقة (ثنائية)</li>
+                            <li>Does not easily represent degrees of probability | لا يمثل بسهولة درجات الاحتمال</li>
+                            <li>Cannot handle uncertainty or ambiguity well | لا يتعامل جيداً مع عدم اليقين أو الغموض</li>
+                        </ul>
+                        <h3>Better Alternatives | بدائل أفضل:</h3>
+                        <div class="key-point">To represent such sentences, we might need:</div>
+                        <div class="arabic-text">لتمثيل مثل هذه الجمل، قد نحتاج إلى:</div>
+                        <ul>
+                            <li><strong>Probabilistic Logic</strong> - handles uncertainty | المنطق الاحتمالي</li>
+                            <li><strong>Fuzzy Logic</strong> - handles degrees of truth | المنطق الضبابي</li>
+                            <li><strong>Statistical Models</strong> - handles likelihoods | النماذج الإحصائية</li>
+                        </ul>
+                        <h3>Conclusion | الخلاصة:</h3>
+                        <div class="error">The sentence is probabilistic, not definitive - that's why traditional FOL cannot represent it accurately.</div>
+                        <div class="arabic-text">الجملة احتمالية وليست قطعية - هذا هو السبب.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 15 -->
+            <div class="exercise-card" data-category="fol inference">
+                <div class="exercise-header">
+                    <span class="exercise-number">Exercise 15 | التمرين 15</span>
+                    <span class="exercise-title">Conversion and Inference Combined | تحويل واستنتاج في مسألة واحدة</span>
+                </div>
+                <div class="exercise-content">
+                    <h3>Problem | المشكلة:</h3>
+                    <p>Convert to FOL, then derive the conclusion:</p>
+                    <p class="arabic-text">حوّل الجمل إلى FOL، ثم استنتج النتيجة:</p>
+                    <div class="key-point">"Everyone who attends training and completes the project gets a certificate."</div>
+                    <div class="arabic-text">"كل من يحضر التدريب وينجز المشروع يحصل على شهادة."</div>
+                    <div class="formula">AttendsTraining(Nada)</div>
+                    <div class="formula">CompletesProject(Nada)</div>
+                    <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution | إظهار الحل</button>
+                    <div class="solution-box hidden">
+                        <div class="solution-title">Solution | الحل:</div>
+                        <h3>Step 1: Define Predicates | الخطوة 1: تعريف المسندات</h3>
+                        <ul>
+                            <li><span class="predicate">AttendsTraining(x)</span> : x attends training | x يحضر التدريب</li>
+                            <li><span class="predicate">CompletesProject(x)</span> : x completes project | x ينجز المشروع</li>
+                            <li><span class="predicate">ReceivesCertificate(x)</span> : x gets certificate | x يحصل على شهادة</li>
+                        </ul>
+                        <h3>Step 2: General Rule | الخطوة 2: القاعدة العامة</h3>
+                        <div class="formula">∀x((AttendsTraining(x) ∧ CompletesProject(x)) → ReceivesCertificate(x))</div>
+                        <h3>Step 3: Given Facts | الخطوة 3: المعطيات</h3>
+                        <div class="formula">AttendsTraining(Nada)</div>
+                        <div class="formula">CompletesProject(Nada)</div>
+                        <h3>Step 4: Combine Conditions | الخطوة 4: دمج الشروط</h3>
+                        <p>Both conditions are satisfied:</p>
+                        <p class="arabic-text">الشرطان متحققان:</p>
+                        <div class="success">AttendsTraining(Nada) ∧ CompletesProject(Nada)</div>
+                        <h3>Step 5: Apply Modus Ponens | الخطوة 5: تطبيق Modus Ponens</h3>
+                        <div class="success">ReceivesCertificate(Nada)</div>
+                        <h3>Final Answer | الإجابة النهائية:</h3>
+                        <p class="arabic-text">ندى تحصل على شهادة</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>📚 Predicate Logic & First-Order Logic Study Guide | دليل دراسة المنطق المسند</p>
+            <p>Click "Show Solution" to reveal answers • Use filters to focus on specific topics</p>
+            <p class="arabic-text">انقر "إظهار الحل" لكشف الإجابات • استخدم الفلاتر للتركيز على مواضيع محددة</p>
+        </footer>
+    </div>
+
+    <script>
+        let completedExercises = new Set();
+
+        function toggleSolution(button) {
+            const solutionBox = button.nextElementSibling;
+            const exerciseCard = button.closest('.exercise-card');
+            const exerciseNumber = exerciseCard.querySelector('.exercise-number').textContent;
+
+            solutionBox.classList.toggle('hidden');
+            button.classList.toggle('showing');
+
+            if (button.classList.contains('showing')) {
+                button.textContent = 'Hide Solution | إخفاء الحل';
+                completedExercises.add(exerciseNumber);
+            } else {
+                button.textContent = 'Show Solution | إظهار الحل';
+                completedExercises.delete(exerciseNumber);
+            }
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const total = 15;
+            const completed = completedExercises.size;
+            const percentage = (completed / total) * 100;
+
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('completedCount').textContent = completed;
+        }
+
+        function filterExercises(category) {
+            const cards = document.querySelectorAll('.exercise-card');
+            const buttons = document.querySelectorAll('.nav-btn');
+
+            // Update active button
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Filter cards
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    const cardCategory = card.getAttribute('data-category');
+                    if (cardCategory && cardCategory.includes(category)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a114d5b3ef326d94',t:'MTc4MjM5OTU1Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
